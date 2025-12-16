@@ -1248,7 +1248,7 @@ Those doors + rules = **interfaces**.
 
 ## Now let’s simplify the three scary words
 
-### 1️⃣ API — *What programmers use*
+### 1️⃣ API (Application Programme Interface) — *What programmers use*
 
 **API = Buttons you are allowed to press**
 
@@ -1269,7 +1269,7 @@ Think:
 
 ---
 
-### 2️⃣ ABI — *How programs actually talk under the hood*
+### 2️⃣ ABI (Application Binary Interface) — *How programs actually talk under the hood*
 
 **ABI = Wiring behind the buttons**
 
@@ -1288,7 +1288,7 @@ Think:
 
 ---
 
-### 3️⃣ ISA — *CPU’s language*
+### 3️⃣ ISA (Instruction Set Architecture) — *CPU’s language*
 
 **ISA = The only language the CPU understands**
 
