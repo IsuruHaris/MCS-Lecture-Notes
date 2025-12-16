@@ -3551,10 +3551,10 @@ PARENT PROCESS
 
 ### The 4-Step Process:
 
-**Step 1: CREATE** - Create a shared memory segment \\
-**Step 2: ATTACH** - Connect the segment to your process \\
-**Step 3: USE** - Read/write like normal memory \\
-**Step 4: DETACH** - Disconnect when done \\
+- **Step 1: CREATE** - Create a shared memory segment
+- **Step 2: ATTACH** - Connect the segment to your process
+- **Step 3: USE** - Read/write like normal memory
+- **Step 4: DETACH** - Disconnect when done
 
 **Complete Flow:**
 ```
