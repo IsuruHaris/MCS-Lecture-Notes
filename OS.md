@@ -546,18 +546,164 @@ If crash happens during step 2:
 • Can safely clean up or retry
 ```
 
-#### **Copy-on-Write (Like Making a Backup Before Changes)**
+That’s a **very good realization** — and your intuition is now exactly right. Let me lock it in cleanly and precisely, because **Copy-on-Write (CoW)** is one of those ideas that *clicks once* and then explains a LOT of modern OS and filesystem behavior.
 
-1. **Don't modify the original** - make a copy with changes
-2. **Only replace the original** when the new version is complete and verified
+---
+
+## Copy-on-Write — The Correct Mental Model ✅
+
+### Core Rule
+
+> **Never modify existing data in place.**
+> Always write changes to a *new location*, then atomically switch to it.
+
+Your description already captures this perfectly.
+
+---
+
+## Step-by-Step (File Save Example)
 
 ```
-Original: [File A - version 1]
-While saving: [File A - version 1] AND [File A - version 2 (in progress)]
-When done: Delete version 1, keep version 2
+Initial state:
+[ File A → Version 1 ]
+
+User clicks "Save"
 ```
 
-If crash happens during save, you still have the original version 1 intact!
+### 1️⃣ Write to a new copy (not the original)
+
+```
+[ File A → Version 1 ]        (unchanged)
+[ Temp File → Version 2 ]    (being written)
+```
+
+* Original file is **read-only during save**
+* New version is built **elsewhere**
+
+---
+
+### 2️⃣ Verify the new version
+
+```
+[ Temp File → Version 2 ]  ✓ complete & valid
+```
+
+* Checksums
+* Size
+* Metadata
+* No partial writes
+
+---
+
+### 3️⃣ Atomic switch (the magic step)
+
+```
+Delete pointer to Version 1
+Rename Temp File → File A
+```
+
+This rename is **atomic** (all-or-nothing).
+
+---
+
+### 4️⃣ Final state
+
+```
+[ File A → Version 2 ]
+```
+
+---
+
+## Crash Scenarios (Why CoW Is Powerful)
+
+### 💥 Crash during save
+
+```
+[ File A → Version 1 ]   ✔ SAFE
+[ Temp File → Version 2 ] (incomplete)
+```
+
+➡ OS deletes temp file on recovery
+➡ **No corruption**
+
+---
+
+### 💥 Crash after save but before delete
+
+```
+[ File A → Version 1 ]
+[ File A → Version 2 ]
+```
+
+➡ Filesystem keeps the *old pointer*
+➡ **Still safe**
+
+---
+
+### 💥 Crash during rename
+
+➡ Rename is atomic
+➡ Either:
+
+* Version 1 exists
+* OR Version 2 exists
+  ➡ **Never a broken file**
+
+---
+
+## Why This Is Called "Copy-on-Write"
+
+Because:
+
+* You **copy first**
+* You **write changes to the copy**
+* You **only switch pointers at the end**
+
+No in-place mutation.
+
+---
+
+## Where Copy-on-Write Is Used (Important)
+
+| System                                    | Why CoW Is Used                  |
+| ----------------------------------------- | -------------------------------- |
+| **Modern filesystems** (ZFS, Btrfs, APFS) | Prevent corruption               |
+| **Virtual memory**                        | Share pages until someone writes |
+| **Fork() in UNIX**                        | Parent & child share pages       |
+| **Databases**                             | Crash-safe transactions          |
+| **Snapshots**                             | Instant backups                  |
+| **Git**                                   | Immutable object storage         |
+
+---
+
+## Very Important Contrast
+
+### ❌ In-Place Write (Old, Dangerous)
+
+```
+[ File A → Version 1 ]
+↓ overwrite
+[ File A → CORRUPTED ]
+```
+
+Crash = **data loss**
+
+---
+
+### ✅ Copy-on-Write (Modern, Safe)
+
+```
+[ Version 1 ]  ← untouched
+[ Version 2 ]  ← built safely
+```
+
+Crash = **no data loss**
+
+---
+
+## One-Line Exam Definition ⭐
+
+> **Copy-on-Write** is a technique where modifications are written to a new copy of data, and the original is replaced only after the new version is completely written, ensuring crash consistency.
 
 ## Real-World Analogy: Library vs. Notebook
 
