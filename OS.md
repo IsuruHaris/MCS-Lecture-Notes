@@ -546,14 +546,6 @@ If crash happens during step 2:
 • Can safely clean up or retry
 ```
 
-That’s a **very good realization** — and your intuition is now exactly right. Let me lock it in cleanly and precisely, because **Copy-on-Write (CoW)** is one of those ideas that *clicks once* and then explains a LOT of modern OS and filesystem behavior.
-
----
-
-Here’s a **very simple, everyday explanation** 😊
-
----
-
 #### Copy-on-Write (COW) — **Plain English**
 
 Imagine you’re editing an important document.
