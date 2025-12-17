@@ -8010,6 +8010,24 @@ Imagine a system with a **32-bit virtual address space**. This means a program c
 
 A 4 MB page table for *every single process* is huge and wasteful, especially since most processes only use a small fraction of their entire 4 GB address space. Keeping such a large table in the MMU's fast, expensive memory is impossible.
 
+**Explanation:
+
+1. **32-bit virtual address space → 4 GB**
+   - 32 bits gives 2^32 distinct addresses.
+   - 2^32 bytes = 4 × 2^30 bytes ≈ 4 GB (since 2^30 bytes = 1 GB).
+
+2. **4 KB page size → 2^20 virtual pages**
+   - 4 KB = 4096 bytes = 2^12 bytes → 12 bits for the offset within a page.
+   - Remaining bits for the page number = 32 − 12 = 20 bits.
+   - Number of virtual pages = 2^20 = 1,048,576 pages.
+
+3. **4-byte PTE → 4 MB page table**
+   - Each PTE = 4 bytes = 2^2 bytes.
+   - Total size = 2^20 entries × 2^2 bytes = 2^22 bytes.
+   - 2^22 bytes = 4 × 2^20 bytes = 4 MB.
+
+A 4 MB page table for *every single process* is huge and wasteful, especially since most processes only use a small fraction of their entire 4 GB address space. Keeping such a large table in the MMU's fast, expensive memory is impossible.
+
 **The Solution: Multi-Level Page Tables**
 
 The clever solution is to break the single, massive page table into a hierarchy of smaller tables—like a book's table of contents that points to individual chapters, which then have their own page listings.
