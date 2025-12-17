@@ -6399,6 +6399,9 @@ Event Timeline:
 
 ## 🔍 Two Types of Latency
 
+- **Interrupt latency**: Time from when the interrupt arrives until the CPU starts executing the Interrupt Service Routine (ISR).
+- **Dispatch latency**: Time from when a ready real-time process is placed in the ready queue until it actually starts running on the CPU.
+
 ### 1. Interrupt Latency - "Hearing the Alarm"
 ```
 What happens when interrupt arrives:
@@ -6412,23 +6415,6 @@ What happens when interrupt arrives:
 │ 4. CPU jumps to emergency handler               │
 │    "Now deal with the emergency!"               │
 └─────────────────────────────────────────────────┘
-```
-
-**Interrupt Latency Diagram:**
-```
-┌───────────────────────────────────────────┐
-│             TASK T RUNNING                │
-│ "Doing normal work..."                    │
-│                                           │
-│ INTERRUPT OCCURS!  → → → → → → → → → → → →│
-│                                           │
-│ 1. Finish current instruction             │
-│ 2. Determine interrupt type               │
-│ 3. Context switch (save state)            │
-│ 4. Start Interrupt Service Routine (ISR)  │
-│                                           │
-│ ───────────INTERRUPT LATENCY────────────→ │
-└───────────────────────────────────────────┘
 ```
 
 ### 2. Dispatch Latency - "Switching to Emergency Mode"
@@ -6469,6 +6455,14 @@ What happens when switching tasks:
 │                 RESPONSE COMPLETE                 │
 └───────────────────────────────────────────────────┘
 ```
+
+**How to read this timeline:**
+- **Event occurs → System detects event**: Hardware raises an interrupt, and the OS starts handling it (this is covered by *interrupt latency* above).
+- **Process made available (in ready queue)**: The ISR or kernel code wakes a higher-priority real-time process and puts it into the ready queue.
+- **Dispatch latency block**: Time from *ready* → *actually running*. It includes:
+  - **Conflict phase**: Finish/untangle any ongoing kernel/critical work (preempt kernel tasks, release locks/resources, resolve dependencies).
+  - **Dispatch time**: Do the actual context switch to the real-time process.
+- **Real-time process runs → Response complete**: The real-time task finally executes and completes the response.
 
 ### The Conflict Phase - "Traffic Jam Problems"
 
