@@ -7104,6 +7104,30 @@ For each task:
 └────────────────────────────────────────────────────┘
 ```
 
+**Intuition:**
+- **Actual runtime** = how long the task really ran on the CPU (wall-clock CPU time).
+- **Virtual runtime (vruntime)** = that time *weighted by priority*.
+
+For the **same actual CPU time**:
+- A **higher-priority** task’s vruntime increases **more slowly** → it *looks* like it has used **less** CPU.
+- A **lower-priority** task’s vruntime increases **faster** → it *looks* like it has used **more** CPU.
+
+So when CFS later picks the next task (smallest vruntime),
+- tasks that have had **less effective CPU** (small vruntime) run **more**,
+- tasks that have had **more effective CPU** (large vruntime) run **less**.
+
+Example (simplified numbers):
+```
+Both tasks run 10 ms of actual CPU time
+
+High-priority task:  vruntime += 10 × 0.5 = 5
+Low-priority task:   vruntime += 10 × 2   = 20
+
+Result: High-priority task has smaller vruntime (5 < 20),
+        so it will be chosen more often, but the low-priority
+        task still runs sometimes and is not completely starved.
+```
+
 ### The CFS Magic for I/O vs CPU-bound Tasks:
 ```
 Scenario: Two tasks with same priority
