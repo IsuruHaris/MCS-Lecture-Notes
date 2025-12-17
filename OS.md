@@ -7535,6 +7535,7 @@ This shows the dynamic nature of memory. When process B is swapped out in (c), i
 ### The Core Problem: What if a Single Program is Too Big?
 
 **Virtual Memory – The Grand Illusion**
+
 The central idea is simple but powerful: **give each program the illusion that it has a very large, private memory space, even if the actual physical RAM (Random Access Memory) in the computer is much smaller.**
 
 Think of it like a librarian (the OS) and a giant bookshelf (the Disk) in a back room. You, a researcher (a Process), have a massive reading table (your Virtual Address Space) but only a small desk (Physical RAM) to work on.
@@ -7598,6 +7599,7 @@ It's all about breaking things into equal-sized blocks.
 *   **The Key Idea:** Any page of a process can be loaded into *any available frame* in physical RAM. The pages do *not* need to be next to each other! This is what "non-contiguous" means and why it avoids external fragmentation.
 
 **The One Small Downside: Internal Fragmentation**
+
 Imagine a process needs 10.25 KB of memory. If the page size is 4 KB, it will need three pages (12 KB). The last page will only use 0.25 KB, wasting 3.75 KB. This wasted space *inside* the last allocated page is called **Internal Fragmentation**. It's generally considered a more manageable problem than external fragmentation.
 
 ---
