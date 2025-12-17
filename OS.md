@@ -5005,13 +5005,35 @@ TIME: 0    1    5    10    17    26
       │────│────│─────│─────│─────│
 ```
 
-### Waiting Time Calculation:
-- **P₁**: (1-0) + (10-5) = 1 + 5 = 6 ms
-- **P₂**: 0 ms (started immediately at arrival)
-- **P₃**: 17 - 2 = 15 ms  
-- **P₄**: 5 - 3 = 2 ms
+We compute waiting time as:
 
-**Average Waiting Time:** (6 + 0 + 15 + 2) / 4 = **23 / 4 = 5.75 ms**
+- **Waiting time = (Completion time − Arrival time) − Burst time**
+- Equivalently, the **total time spent in the ready queue** (not running).
+
+From the Gantt chart, the completion times are:
+- P₁ completes at time **17**
+- P₂ completes at time **5**
+- P₃ completes at time **26**
+- P₄ completes at time **10**
+
+- **P₁**  
+  - Arrival = 0, Burst = 8, Completion = 17  
+  - Waiting time = (17 − 0) − 8 = 17 − 8 = **9 ms**  
+  - Intuitively: P₁ runs from 0–1, then waits in the ready queue from 1–10 while P₂ and P₄ run, then runs again from 10–17. The waiting period is 10 − 1 = **9 ms**.
+
+- **P₂**  
+  - Arrival = 1, Burst = 4, Completion = 5  
+  - P₂ starts immediately at arrival (runs from 1–5) → Waiting time = (5 − 1) − 4 = **0 ms**
+
+- **P₃**  
+  - Arrival = 2, Burst = 9, Completion = 26  
+  - P₃ stays in the ready queue from 2 until it starts at 17 → Waiting time = (26 − 2) − 9 = 24 − 9 = **15 ms**.
+
+- **P₄**  
+  - Arrival = 3, Burst = 5, Completion = 10  
+  - P₄ waits from 3 to 5 while P₂ finishes, then runs from 5–10 → Waiting time = (10 − 3) − 5 = 7 − 5 = **2 ms**.
+
+**Average Waiting Time:** (9 + 0 + 15 + 2) / 4 = **26 / 4 = 6.5 ms**
 
 ---
 
