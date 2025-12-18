@@ -12235,6 +12235,86 @@ Think of it like reserving a parking spot that nobody else can use, even when th
 +--------------------------------------------------------------------+
 ```
 
+### Quick side question: where are page tables?
+
+Yes, **page tables live in RAM**.  
+They are just kernel data structures stored in physical memory. The CPU also has a **TLB cache**, but the “official” page tables are in RAM. So when your diagram says:
+
+> “Sets LOCK bit in page table entries”
+
+it means: **in RAM, inside those page-table structures**, the OS flips a bit that says “this page must not be swapped out right now”.
+
+---
+
+## Big picture: Why do we need page locking for I/O?
+
+When you do I/O (like `read(file, buffer, size)`), the disk (via DMA) writes **directly into RAM**.  
+
+Problem:  
+While the disk is writing, the OS might:
+
+- swap that page out to disk, or  
+- reuse that physical frame for something else  
+
+…unless it **locks** the page. That could corrupt data.
+
+**Page locking = “OS promises this RAM stays put during I/O”.**
+
+---
+
+## Step‑by‑step in simple terms
+
+Think of a process calling `read()` to fill a buffer in memory.
+
+### Step 1: Process requests I/O
+
+- Your program calls `read(file, buffer, size)`.
+- It says: “Put the data in this memory area called `buffer`.”
+
+### Step 2: OS locks buffer pages
+
+- OS checks: “Which **physical pages** hold this `buffer`?”
+- It makes sure those pages are **in RAM** (page them in if needed).
+- Then, in the **page table entries** for those pages, it sets a **LOCK bit**:
+  - Meaning: “Do not swap these pages out; do not move them.”
+
+So now the DMA device has **stable physical addresses** to write to.
+
+### Step 3: OS starts DMA
+
+- OS programs the disk/DMA controller:
+  - “Read from this disk area and **write directly to physical addresses X, Y, Z**.”
+- From now on, the hardware moves data between disk and those RAM pages, **without CPU copying each byte**.
+
+### Step 4: I/O in progress, process may sleep
+
+- Disk is busy transferring data to those **locked pages**.
+- The process that called `read()` usually **sleeps** (is blocked), so the CPU can run other processes.
+
+### Step 5: I/O completion interrupt
+
+- When the disk/DMA is done, it sends an **interrupt**.
+- OS wakes up, checks: “Did the transfer finish OK to those locked pages?”
+
+### Step 6: OS unlocks pages
+
+- Now that I/O is safely finished:
+  - OS clears the **LOCK bits** in the page table entries.
+  - Those pages can again be swapped or moved if needed.
+
+### Step 7: Process wakes up
+
+- OS wakes the process.
+- `read()` returns with data now sitting in `buffer`.
+- The process doesn’t know (or care) that its pages were locked/unlocked.
+
+---
+
+### One‑line summary
+
+- **Page tables in RAM** tell the OS where each virtual page lives in physical memory.
+- During I/O, the OS **locks** the buffer’s pages in those tables so DMA always writes to safe, stable RAM locations until the transfer is complete.
+
 ### What Could Go Wrong Without Locking
 
 **Diagram: DMA Disaster Scenario**
