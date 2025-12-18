@@ -12951,21 +12951,14 @@ Let me recreate the first example from your slides:
 TIME:    1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22
 REF:     7  0  1  2  0  3  0  4  2  3  0  3  0  3  2  1  2  0  1  7  0  1
         ----------------------------------------------------------------
-FRAME 1: 7  7  7  2  2  2  2  4  4  4  0  0  0  0  0  1  1  1  1  7  7  7
-FRAME 2:    0  0  0  0  3  3  3  2  2  2  3  3  3  3  2  2  2  2  0  0  0
-FRAME 3:       1  1  1  1  0  0  0  3  3  3  0  0  0  0  0  0  0  1  1  1
+FRAME 1: 7  7  7  2  2  2  2  4  4  4  0  0  0  0  0  0  0  0  7  7  7  7
+FRAME 2:    0  0  0  0  3  3  3  2  2  2  2  2  2  2  1  1  1  1  1  0  0
+FRAME 3:       1  1  1  1  0  0  0  3  3  3  3  3  3  3  2  2  2  2  2  1
         ----------------------------------------------------------------
-FAULT?   F  F  F  F     F  F  F  F  F  F  F        F  F  F  F  F  F
+FAULT?   F  F  F  F     F  F  F  F  F  F              F  F     F     F  F
 ```
 
 **Page Faults:** 15 (as mentioned in your slide)
-
-### **What Happened:**
-1. **Time 1-3:** Frames fill up with pages 7, 0, 1 (3 faults)
-2. **Time 4:** Need page 2, remove oldest (7), add 2 (fault)
-3. **Time 5:** Page 0 is already in frame 2 (no fault)
-4. **Time 6:** Need page 3, remove oldest (0), add 3 (fault)
-5. ...and so on
 
 ---
 
