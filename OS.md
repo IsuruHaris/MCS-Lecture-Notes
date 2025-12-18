@@ -13240,9 +13240,9 @@ Let me show you the **thinking process** at critical points:
 ```
 Current frames: [7, 0, 1]
 Usage history: 
-- Page 7: Used at time 1 (3 steps ago)
+- Page 7: Used at time 1 (3 steps ago) ⭐ WINNER - Least Recently Used!
 - Page 0: Used at time 2 (2 steps ago) 
-- Page 1: Used at time 3 (1 step ago) ⭐ WINNER - Least Recently Used!
+- Page 1: Used at time 3 (1 step ago) 
 
 Decision: Remove page 7 (hasn't been used for longest time)
 ```
