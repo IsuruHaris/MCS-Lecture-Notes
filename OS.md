@@ -15241,9 +15241,9 @@ Process P_i's Life Cycle:
 │  │ (Wait for   │      │ (Use shared │      │  M  │  │
 │  │  permission)│      │  resource)  │      │  A  │  │
 │  └─────────────┘      └─────────────┘      │  I  │  │
-│         │                      │           │  N  │  │
-│         │                      │           │  D  │  │
-│         ▼                      ▼           │  E  │  │
+│                                            │  N  │  │
+│                                            │  D  │  │
+│                                            │  E  │  │
 │  ┌─────────────┐      ┌───────────────┐    │  R  │  │
 │  │             │      │    EXIT       │    │     │  │
 │  │   WAITING   │      │   SECTION     │<───┴─────┘  │
