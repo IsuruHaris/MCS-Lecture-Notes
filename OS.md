@@ -10434,6 +10434,20 @@ The key insight is that **we can page the page table itself** - meaning we can b
 +-------------------------------------------------------------------------+
 ```
 
+**Step-by-step explanation:**
+1. **Flat page table (4 MB):**
+   * 32-bit virtual address space = 2^32 bytes ≈ 4 GB.
+   * Page size 4 KB = 2^12 bytes → 2^20 virtual pages.
+   * 2^20 entries × 4 bytes = 2^22 bytes = 4 MB page table per process.
+2. **Two-level hierarchical table (16 KB):**
+   * Each page table (outer or inner) is one 4 KB page with 1024 entries (4096 ÷ 4).
+   * Outer table is always present → 4 KB.
+   * Process touches 3 regions → 3 inner tables → 3 × 4 KB = 12 KB.
+   * Total page-table memory = 4 KB + 12 KB = 16 KB.
+3. **Savings factor:**
+   * 4 MB = 4096 KB, 16 KB = 16 KB.
+   * 4096 ÷ 16 = 256 → 256× less memory than a flat table.
+
 ### Real-World Example: How This Helps
 
 Let's see how this works for a typical program:
