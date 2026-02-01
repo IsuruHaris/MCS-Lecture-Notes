@@ -18381,3 +18381,3567 @@ bigData = null;               // Hint to browser: can free this
 - **Garbage collection** = Using a taxi: you get out and someone else cleans up
 - **Dangling pointer** = Trying to drive a car you already returned
 - **Memory leak** = Keeping rental cars forever without returning them
+
+***
+***
+
+# Control Structures Explained
+
+## 1. What is Flow of Control?
+
+**Control flow** (also called **flow of control**) is simply **the order in which your program runs its instructions**.
+
+Think of it like following a recipe:
+- Normally, you follow steps 1, 2, 3 in order
+- But sometimes you might need to skip a step (conditional)
+- Or repeat a step several times (looping)
+- Or jump to a different part of the recipe entirely
+
+### Levels of Control Flow
+
+Control flow happens at three main levels:
+
+#### 1. Within Expressions
+When you write: `3 + 4 * 5`
+- The **flow** determines that multiplication (`*`) happens before addition (`+`)
+- This is controlled by **operator precedence** (which operator goes first) and **associativity** (left-to-right or right-to-left for same precedence)
+
+#### 2. Among Statements
+When you write multiple instructions, the order they execute in.
+
+#### 3. Among Program Units
+How your program moves between functions, methods, or modules.
+
+## 2. Types of Control Flow Statements
+
+Different programming languages support different ways to control flow. Here are the main types:
+
+### 1. Unconditional Branching or Jump
+- **Simple meaning**: "Go to this other place in the code no matter what"
+- **Example**: `goto` statement in C, or calling a function
+- **Analogy**: Saying "skip to step 10" in a recipe without checking anything
+
+### 2. Conditional Branching
+- **Simple meaning**: "Only go here IF something is true"
+- **Examples**: `if`, `else`, `switch`, `case` statements
+- **Analogy**: "IF the dough is sticky, add more flour; OTHERWISE, proceed to kneading"
+
+### 3. Looping
+- **Simple meaning**: "Keep doing this until something changes"
+- **Examples**: `for`, `while`, `do-while` loops
+- **Analogy**: "Knead the dough UNTIL it becomes smooth and elastic"
+
+### 4. Functions and Subroutines
+- **Simple meaning**: "Jump to this separate piece of code, then come back"
+- **Examples**: Function calls, method calls
+- **Analogy**: "Go prepare the sauce (following the sauce recipe), then return to the main recipe"
+
+### 5. Unconditional Halt
+- **Simple meaning**: "Stop the program completely"
+- **Examples**: `exit()`, `System.exit()`
+- **Analogy**: "Stop cooking entirely and turn off the stove"
+
+## 3. How Control Flow Works at the Machine Level
+
+### The Program Counter (Instruction Counter)
+Every computer has a special memory location called the **Program Counter** (PC).
+
+```
+[Simplified Computer Memory]
+Memory Address | Instruction
+---------------|---------------
+1000           | LOAD value A
+1004           | ADD value B  
+1008           | STORE result
+1012           | JUMP to 1000  ← Changes the Program Counter!
+1016           | ...other code...
+```
+
+**How it works:**
+1. The PC always points to the **next instruction** to execute
+2. Normally, after each instruction, the PC just moves to the next memory address (1000 → 1004 → 1008)
+3. **Control flow instructions CHANGE the PC** to make it point somewhere else
+
+### Control Flow Instructions
+At the lowest level, most CPUs only have two types of control flow:
+
+```
+1. Unconditional Jump: "Always go to address X"
+   Example: JUMP 1000  (PC becomes 1000)
+
+2. Conditional Jump: "Only go to address X IF some condition is true"
+   Example: JUMP-IF-ZERO 1000  (Only jump if last result was zero)
+```
+
+**Key Insight**: All the fancy `if` statements, `for` loops, and function calls in high-level languages eventually get translated down to these simple **jump instructions** at the machine level.
+
+## Simple Summary
+
+1. **Control Flow** = The order your code runs in
+2. **Types** = Jumps (go to), Conditionals (if), Loops (repeat), Functions (go and return), Halts (stop)
+3. **Under the Hood** = It's all about changing the Program Counter to point to different instructions
+
+Think of it like reading a book: normally you read page 1, then 2, then 3. But sometimes you might:
+- Skip ahead (jump)
+- Go back and reread (loop)
+- Jump to a footnote and then return (function call)
+- Close the book entirely (halt)
+
+***
+***
+
+# Sequence Control Between Statements Explained
+
+## What is Sequence Control?
+
+**Sequence control** refers to the basic mechanisms that determine the order in which individual statements are executed within a program.
+
+**Control Structure** = A control statement (like `if`, `while`) + all the statements it controls.
+
+## The Three Fundamental Control Structures
+
+There's an important mathematical proof that shows:
+> **All programs can be built using just THREE basic control structures**
+
+### The Three Essentials:
+```
+1. SEQUENCE: 
+   Statement A → Statement B → Statement C
+   (Just do one thing after another in order)
+
+2. SELECTION (Choosing):
+   ┌─────────────────────┐
+   │ Is condition true?  │
+   └─────────┬───────────┘
+             │
+        ┌────┴────┐
+        ▼         ▼
+   Do this    Do that
+   (if-then-else type logic)
+
+3. ITERATION (Looping):
+   Start
+     │
+     ▼
+   ┌─────────────────────┐
+   │ While condition     │ ◄─────┐
+   │ is true:            │       │
+   │   Do something      │       │
+   │                     │       │
+   └─────────────────────┘       │
+     │                           │
+     │ (condition false)         │
+     ▼                           │
+   Continue ─────────────────────┘
+```
+
+**Important**: Even though these three are mathematically enough, real programming languages give you MORE tools (like `for` loops, `switch` statements) to make programming easier!
+
+## The Three Common Forms in Practice
+
+### 1. Composition (Sequence)
+- Statements run in the exact order they're written
+- Like following a recipe step-by-step
+
+### 2. Alternation (Selection)
+- Choosing between different paths
+- Examples: `if`, `else if`, `else`, `switch`, `case`
+
+### 3. Iteration (Looping)
+- Repeating statements
+- Examples: `while`, `for`, `do-while`
+
+## Compound Statements: Grouping Code Together
+
+### What Are Compound Statements?
+They're a way to **treat multiple statements as one unit**.
+
+**Why we need them**: Without compound statements, an `if` could only control ONE statement!
+
+### History of Compound Statements
+- **Early FORTRAN**: No compound statements! Each `IF` could only control one line
+- **ALGOL60 introduced**: `begin` and `end` blocks
+
+```
+begin
+    statement1;
+    statement2;
+    ...;
+    statementN;
+end
+```
+
+### Modern Examples:
+1. **C/C++/Java/JavaScript**: Use curly braces `{ }`
+   ```c
+   {
+       statement1;
+       statement2;
+   }
+   ```
+
+2. **Python**: Uses **indentation** (no braces!)
+   ```python
+   if condition:
+       statement1  # Part of the block
+       statement2  # Part of the block
+   statement3      # NOT part of the block
+   ```
+
+### Blocks = Compound Statements + Data
+When you add variable declarations to a compound statement, it becomes a **block**:
+```c
+{
+    int x = 5;      // Declaration
+    x = x + 1;      // Statement
+    printf("%d", x); // Another statement
+}
+```
+
+## Key Issues in Control Structures
+
+### Two Main Questions:
+
+1. **Multiple Entry Points?**
+   - Should we be able to jump INTO the middle of a loop or `if` statement?
+   - **Answer**: Usually NOT allowed - it creates confusing "spaghetti code"
+
+2. **Multiple Exit Points?**
+   - Should we be able to jump OUT from the middle?
+   - **Answer**: Usually ALLOWED (like `break`, `return`, `goto`)
+
+### Example: The Problem with Jumping INTO Control Structures
+
+```
+while cond1 do
+  begin
+    ... (some code) ...
+    goto 100;           ← Jumping OUT is okay
+    while cond2 do
+    begin
+      ... (code) ...
+      100:              ← Label 100
+      ... (more code) ...
+    end;
+  end;
+```
+
+**Visualizing the Problem:**
+
+```
+┌─────────────────────────────────────┐
+│ while cond1 do:                     │
+│   ┌─────────────────────────────┐   │
+│   │ ... code ...                │   │
+│   │ goto 100; ───────┐          │   │
+│   │ while cond2 do:  │          │   │
+│   │   ┌──────────┐   │          │   │
+│   │   │ ... code │   │          │   │
+│   │   │ 100: ────┼───┘          │   │
+│   │   │ ... code │              │   │
+│   │   └──────────┘              │   │
+│   └─────────────────────────────┘   │
+└─────────────────────────────────────┘
+```
+
+**What's happening here?**
+The `goto 100` jumps **into the middle** of the inner `while` loop! This creates confusion:
+- Did the inner `while` loop start normally?
+- What's the value of loop variables?
+- This makes code very hard to understand and debug.
+
+## Simple Summary
+
+1. **Three Essentials**: Sequence, Selection, Iteration can build ANY program
+2. **Compound Statements**: Let you group multiple statements into one block
+3. **Multiple Entry Points**: Bad! Don't jump into the middle of control structures
+4. **Multiple Exit Points**: Okay! Jumping out (with `break`, `return`) is fine
+
+**Key Takeaway**: Programming languages give you tools to control flow, but they have rules to keep your code understandable. Jumping around too much creates "spaghetti code" that's hard to follow!
+
+***
+***
+
+# Explicit Sequence Control Explained
+
+## What is Explicit Sequence Control?
+
+**Explicit sequence control** means you're **directly telling the program** where to go next, instead of letting it follow the natural flow. The main tool for this is the `goto` statement.
+
+## The `goto` Statement: Power and Problems
+
+### The Power of `goto`
+The `goto` statement is incredibly powerful. In fact:
+
+**Mathematical Fact**: You can write ANY program using ONLY `goto` statements (along with basic condition checking). You don't actually need `if`, `while`, `for`, or any other control structures!
+
+### Example of `goto` Usage:
+
+```c
+// Simple program using goto
+int main() {
+    int i = 0;
+    
+start:
+    if (i >= 5) goto end;
+    printf("i = %d\n", i);
+    i++;
+    goto start;
+    
+end:
+    printf("Done!\n");
+    return 0;
+}
+```
+
+This program prints:
+```
+i = 0
+i = 1
+i = 2
+i = 3
+i = 4
+Done!
+```
+
+**What's happening?**
+1. We set `i = 0`
+2. We check if `i >= 5`
+3. If NOT, we print, increment `i`, and jump back to `start:`
+4. If YES, we jump to `end:` and finish
+
+### The Problem: Spaghetti Code
+
+The term **"spaghetti code"** comes from programs that use too many `goto` statements, making the code flow look like a tangled bowl of spaghetti:
+
+```
+ Start:                                          
+   ┌─────────────┐                               
+   │ Statement A │                               
+   └──────┬──────┘                               
+          │                                      
+          ▼                                      
+   ┌─────────────┐      ┌─────────────┐          
+   │ Statement B │────▶│ goto LabelX │─────────────┐
+   └─────────────┘      └─────────────┘             │
+          │                                         │
+          ▼                                         │
+   ┌─────────────┐                                  │
+   │ Statement C │                                  │
+   └─────────────┘                                  │
+                                                    │
+ LabelY:                                            │
+   ┌─────────────┐                                  │
+   │ Statement D │                                  │
+   └──────┬──────┘                                  │
+          │                                         │
+          ▼                                         │
+   ┌─────────────┐                                  │
+   │ goto LabelZ │──────────────────────────────────┼──┐
+   └─────────────┘                                  │  │
+                                                    │  │
+ LabelX: ◀──────────────────────────────────────────┘  │
+   ┌─────────────┐                                     │
+   │ Statement E │                                     │
+   └──────┬──────┘                                     │
+          │                                            │
+          ▼                                            │
+   ┌─────────────┐                                     │
+   │ Statement F │                                     │
+   └─────────────┘                                     │
+                                                       │
+ LabelZ: ◀─────────────────────────────────────────────┘
+   ┌─────────────┐
+   │ Statement G │
+   └─────────────┘
+```
+
+**Why this is terrible:**
+1. **Unreadable**: You have to trace arrows all over to understand the flow
+2. **Hard to debug**: If something goes wrong, where did it come from?
+3. **Hard to modify**: Changing one part might break connections you didn't even see
+
+## Modern View on `goto`
+
+### Can We Live Without `goto`?
+**YES!** As mentioned in the previous slides:
+- All programs can be written using just **sequence**, **selection**, and **iteration**
+- These structured control flows are MUCH clearer
+
+### Example: The `goto` Loop vs. Structured Loop
+
+**Using `goto` (messy):**
+```c
+int i = 0;
+start:
+if (i >= 5) goto end;
+printf("i = %d\n", i);
+i++;
+goto start;
+end:
+```
+
+**Using `while` loop (clean and clear):**
+```c
+int i = 0;
+while (i < 5) {
+    printf("i = %d\n", i);
+    i++;
+}
+```
+
+Both do the same thing, but the `while` loop version is:
+1. **More readable**: You can see at a glance it's a loop
+2. **Self-contained**: Everything about the loop is in one place
+3. **Safer**: No risk of jumping to the wrong label
+
+### What Languages Do Today
+
+1. **Languages that eliminated `goto` entirely**:
+   - Java, Python, JavaScript, Ruby
+   - These languages provide better alternatives
+
+2. **Languages that kept `goto` but discourage it**:
+   - C, C++ (use sparingly, mainly for error cleanup)
+   - Go (has `goto` but with restrictions)
+
+3. **Better alternatives available**:
+   - `break` and `continue` for loops
+   - `return` for functions
+   - Exception handling (`try`/`catch`) for error cases
+
+## Simple Summary
+
+1. **`goto` is powerful**: You could write everything with it
+2. **`goto` creates spaghetti**: Too many jumps make code unreadable
+3. **We don't need `goto`**: Modern structured programming (sequence, selection, iteration) is cleaner
+4. **Most new languages ban `goto`**: Because the disadvantages outweigh any advantages
+
+**Key Insight**: Programming is not just about making the computer understand your code—it's about making OTHER PROGRAMMERS understand your code. `goto` makes this very difficult, so we use structured control flow instead.
+
+***
+***
+
+# Forms of `goto` Statement Explained
+
+## The Two Types of `goto`
+
+### 1. Unconditional Branching
+**Simple meaning**: "Always jump to this label"
+
+**Code Example**:
+```go
+// Go language example
+fmt.Println("Start")
+goto skip
+fmt.Println("This won't print") // Skipped!
+skip:
+fmt.Println("End")
+```
+
+**What happens**:
+```
+Start
+End
+```
+
+**Visualization**:
+```
+┌─────────────────┐
+│ Start           │
+│ Print "Start"   │
+│ goto skip ──────┼─────┐
+│ (skipped code)  │     │
+│ Print "This..." │     │
+│                 │     │
+│ skip:      ◀─────────┘
+│ Print "End"     │     
+└─────────────────┘     
+```
+
+### 2. Conditional Branching
+**Simple meaning**: "Jump to this label ONLY IF a condition is true"
+
+**Code Example**:
+```go
+// Go language example
+if A == 0 {
+    goto zero_case
+}
+fmt.Println("A is not zero")
+goto end
+
+zero_case:
+fmt.Println("A is zero")
+
+end:
+fmt.Println("Done")
+```
+
+**Visualization**:
+```
+        ┌─────────────────┐
+        │ Check: A == 0?  │
+        └────────┬────────┘
+                 │
+         ┌───────┴────────┐
+         ▼                ▼
+   A == 0 (true)     A == 0 (false)
+         │                │
+         ▼                ▼
+  ┌────────────┐   ┌─────────────┐
+  │ goto       │   │ Print       │
+  │ zero_case  │   │ "A is not   │
+  └─────┬──────┘   │  zero"      │
+        │          │ goto end    │
+        │          └─────┬───────┘
+        │                │
+        ▼                ▼
+  zero_case:        end:
+  ┌────────────┐   ┌─────────────┐
+  │ Print      │   │ Print       │
+  │ "A is zero"│   │ "Done"      │
+  └─────┬──────┘   └─────────────┘
+        │                │
+        └───────┬────────┘
+                ▼
+           Both paths
+           continue here
+```
+
+## The Problem: Jumping INTO Control Structures
+
+### The Dangerous Example
+```pascal
+while cond1 do
+begin
+    ... (code) ...
+    goto 100;           ← Jumping OUT of current flow
+    while cond2 do
+    begin
+        ... (code) ...
+        100:            ← Label 100 INSIDE inner while!
+        ... (code) ...
+    end;
+end;
+```
+
+**Visualizing the Problem**:
+
+```
+OUTSIDE LOOP
+    │
+    ▼
+┌─────────────────────────────────────┐
+│ while cond1 do:                     │
+│   ┌─────────────────────────────┐   │
+│   │ ... code ...                │   │
+│   │                             │   │
+│   │ goto 100; ───────────────┐  │   │
+│   │                          │  │   │
+│   │ while cond2 do:          │  │   │
+│   │   ┌──────────────────┐   │  │   │
+│   │   │ ... code ...     │   │  │   │
+│   │   │                  │   │  │   │
+│   │   │ 100: ◀───────────┼──┘  │   │
+│   │   │ ... code ...     │      │   │
+│   │   └──────────────────┘      │   │
+│   └─────────────────────────────┘   │
+└─────────────────────────────────────┘
+```
+
+**Why This Is Bad**:
+1. The `goto 100` jumps **into the middle** of the inner `while` loop
+2. The inner loop's initialization might have been skipped
+3. Variables might be in unexpected states
+4. This creates **"spaghetti code"** that's very hard to debug
+
+## How Different Languages Handle `goto`
+
+### 1. PL/I: The Wild West Approach
+**PL/I allows**: `goto VARIABLE_NAME`
+- At runtime, control can jump ANYWHERE in the program
+- This is extremely dangerous!
+
+**Example**:
+```pl/i
+/* PL/I example - VERY DANGEROUS! */
+label = 'SECTION_X';  /* Variable holding a label name */
+goto label;           /* Jump to whatever label is in the variable! */
+```
+
+**Problem**: You can't tell where the code will jump just by reading it!
+
+### 2. Pascal: The Safer Approach
+Pascal allows `goto` but with **strict rules**:
+
+**Rule**: You can only jump to labels that are:
+1. In the SAME function/procedure
+2. At the SAME nesting level (not into deeper nested structures)
+3. Not into the middle of other control structures (unless you're already inside them)
+
+## Examples: Valid vs. Invalid `goto` in Pascal
+
+### Valid Pascal `goto` Usage
+
+**Example 1**: Jumping within same compound statement
+```pascal
+while cond1 do
+begin
+    100: ...code...
+    ...more code...
+    while cond2 do
+    begin
+        ...code...
+        goto 100;    ← OK: Jumping to label 100 in same outer block
+        ...code...
+    end;
+end;
+```
+
+**Visualization**:
+```
+┌─────────────────────────────────────┐
+│ while cond1 do:                     │
+│   ┌─────────────────────────────┐   │
+│   │ 100: ...code...             │   │
+│   │ ...more code...             │   │
+│   │ while cond2 do:             │   │
+│   │   ┌──────────────────┐      │   │
+│   │   │ ...code...       │      │   │
+│   │   │ goto 100;        ┼      ┘   │
+│   │   │ ...code...       │          │
+│   │   └──────────────────┘          │
+│   └─────────────────────────────┘   │
+└─────────────────────────────────────┘
+```
+
+**Example 2**: Jumping within same procedure (not into another procedure)
+```pascal
+procedure p1
+begin
+    ...code...
+    procedure p2
+    begin
+        goto 100;    ← OK: Jumping to label in same outer procedure
+    end;
+    100: ...code...
+end;
+```
+
+### Invalid Pascal `goto` Usage
+
+**Example**: Jumping INTO a loop
+```pascal
+goto 1;                    ← Trying to jump INTO the for loop
+for i := 1 to 10 do
+begin
+    ...code...
+    1: writeln(i)         ← Label INSIDE the loop
+end;
+```
+
+**Visualization**:
+```
+┌─────────────────────────────────────┐
+│ goto 1; ───────────────────┐        │
+│                            │        │
+│ for i := 1 to 10 do:       │        │
+│   ┌────────────────────┐   │        │
+│   │ ...code...         │   │        │
+│   │                    │   │        │
+│   │ 1: writeln(i) ◀───────│        │
+│   └────────────────────┘            │
+└─────────────────────────────────────┘
+```
+
+**Why this is invalid in Pascal**:
+1. The `for` loop initializes `i := 1` when it starts
+2. If you jump directly to label `1`, you skip this initialization
+3. What is the value of `i`? It's undefined!
+4. This could cause crashes or wrong results
+
+## Simple Summary
+
+1. **Two `goto` types**: Unconditional (always jump) and Conditional (jump if true)
+2. **Jumping INTO control structures is dangerous**: Skips initialization, creates confusion
+3. **PL/I's approach is too loose**: `goto` to variable labels is unpredictable
+4. **Pascal's approach is safer**: Restricts where you can jump to
+5. **Modern languages mostly avoid `goto`**: Because even with restrictions, it can create messy code
+
+**Key Insight**: Programming languages try to prevent you from making mistakes. Restricting `goto` is like putting guard rails on a bridge—it keeps you from accidentally falling into confusing, buggy code!
+
+***
+***
+
+# Labels, Break, and Continue Explained
+
+## What Are Labels?
+
+### Simple Definition
+A **label** is like a **bookmark** or **signpost** in your code. It marks a specific location so you can jump to it later.
+
+**Key points about labels:**
+1. They **mark a position** in the code
+2. They **don't do anything** by themselves
+3. They only matter when something (like `goto`) references them
+
+### Analogy
+Think of a treasure map:
+- The "X" marks the spot (that's the label)
+- The instructions say "go to X" (that's the `goto`)
+- The "X" itself doesn't do anything - it just sits there
+
+## Different Ways Languages Create Labels
+
+### 1. Using Identifiers (Algol 60, C)
+```c
+// C example using identifier labels
+#include <stdio.h>
+
+int main() {
+    int i = 0;
+    
+    start:  // "start" is a label (identifier)
+    if (i >= 3) goto finish;
+    printf("i = %d\n", i);
+    i++;
+    goto start;
+    
+    finish:  // "finish" is another label
+    printf("Done!\n");
+    return 0;
+}
+```
+
+### 2. Using Numbers (FORTRAN, Pascal)
+```fortran
+! FORTRAN example using number labels
+      PROGRAM EXAMPLE
+      INTEGER I
+      I = 0
+      
+   10 IF (I .GE. 3) GOTO 20  ! Label 10
+      PRINT *, 'I = ', I
+      I = I + 1
+      GOTO 10
+      
+   20 PRINT *, 'DONE!'       ! Label 20
+      END
+```
+
+```pascal
+// Pascal example using number labels
+program Example;
+var i: integer;
+begin
+    i := 0;
+    
+    10: if i >= 3 then goto 20;
+    writeln('i = ', i);
+    i := i + 1;
+    goto 10;
+    
+    20: writeln('Done!');
+end.
+```
+
+### 3. Using Variables (PL/I - Rare and Dangerous!)
+```pl/i
+/* PL/I example - VERY CONFUSING! */
+DECLARE LABEL_NAME CHARACTER(10);
+LABEL_NAME = 'MY_LABEL';
+GOTO LABEL_NAME;  /* Jump to whatever label is in the variable! */
+
+MY_LABEL:
+    PUT LIST('Hello');
+```
+
+**Why variable labels are bad:** You can't tell where the code jumps just by reading it!
+
+### Common Syntax: The Colon
+Most languages use a colon (`:`) after the label name:
+```
+label_name: statement
+    or
+100: statement
+```
+
+## Modern Alternatives to `goto`: `break` and `continue`
+
+Since `goto` can create spaghetti code, modern languages provide cleaner ways to control flow within loops.
+
+### The `break` Statement
+
+**Simple meaning**: "Exit the loop right now"
+
+**Code Example**:
+```c
+while (a < b) {
+    printf("Processing...\n");
+    
+    if (something_went_wrong) {
+        break;  // Exit the loop immediately
+    }
+    
+    printf("Still working...\n");
+}
+
+printf("Loop finished or broken\n");
+```
+
+**What happens**:
+```
+┌─────────────────────────────┐
+│ Start while loop            │
+│   Print "Processing..."     │
+│                             │
+│   Check: something_wrong?   │
+│        │                    │
+│   false│          true      │
+│        │                    │
+│        ▼                    ▼
+│   Print "Still working"   break; → Exit loop
+│        │                    │
+│        ▼                    │
+│   Loop continues            │
+└─────────────────────────────┘
+```
+
+**Visualization of `break`**:
+```
+┌─────────────────────────────────────┐
+│ while (condition) {                 │
+│   ┌─────────────────────────────┐   │
+│   │ Statement 1                 │   │
+│   │ Statement 2                 │   │
+│   │                             │   │
+│   │ if (problem) {              │   │
+│   │   break; ───────────────────┼───┼─────┐
+│   │ }                           │   │     │
+│   │                             │   │     │
+│   │ Statement 3                 │   │     │
+│   │ Statement 4                 │   │     │
+│   └─────────────────────────────┘   │     │
+│ }                                   │     │
+└─────────────────────────────────────┘     │
+         │                                  │
+         │ Code after loop ◀────────────────┘
+         ▼
+```
+
+### The `continue` Statement
+
+**Simple meaning**: "Skip the rest of this loop iteration and start the next one"
+
+**Code Example**:
+```c
+while (a < b) {
+    printf("Start of iteration\n");
+    
+    if (skip_this_one) {
+        continue;  // Skip to next iteration
+    }
+    
+    printf("Important work here\n");
+    printf("More important work\n");
+}
+
+printf("Loop completely finished\n");
+```
+
+**What happens**:
+```
+┌─────────────────────────────┐
+│ Start while loop            │
+│   Print "Start of iteration"│
+│                             │
+│   Check: skip_this_one?     │
+│        │                    │
+│   false│          true      │
+│        │                    │
+│        ▼                    ▼
+│   Do important work       continue; → Jump to next iteration
+│   Do more work              │
+│        │                    │
+│        ▼                    │
+│   Next iteration ←──────────┘
+└─────────────────────────────┘
+```
+
+**Visualization of `continue`**:
+```
+┌─────────────────────────────────────┐
+│ while (condition) {                 │
+│   ┌─────────────────────────────┐   │
+│   │ Statement 1                 │   │
+│   │ Statement 2                 │   │
+│   │                             │   │
+│   │ if (skip) {                 │   │
+│   │   continue; ────────────────┼───┼──┐
+│   │ }                           │   │  │
+│   │                             │   │  │
+│   │ Statement 3 ←───────────────┘   │  │
+│   │ Statement 4                     │  │
+│   └─────────────────────────────┘   │  │
+│ } ←─────────────────────────────────┘  │
+│   Check condition ─────────────────────┘
+│   If true, next iteration
+│   If false, exit loop
+└─────────────────────────────────────┘
+```
+
+## Comparing All Three
+
+### `goto` vs `break` vs `continue`
+
+| Statement | What it does | Where it can go |
+|-----------|--------------|-----------------|
+| `goto label` | Jump to ANY labeled statement in same function | Anywhere (can create spaghetti) |
+| `break` | Exit the CURRENT loop only | Only out of the loop (clean exit) |
+| `continue` | Skip to NEXT iteration of CURRENT loop | Only to loop start (clean skip) |
+
+### Example Showing All Three:
+```c
+int i = 0;
+while (i < 5) {
+    i++;
+    
+    if (i == 1) {
+        continue;  // Skip printing when i == 1
+    }
+    
+    if (i == 4) {
+        break;     // Exit loop when i == 4
+    }
+    
+    if (i == 3) {
+        goto done; // Jump to label (not recommended!)
+    }
+    
+    printf("i = %d\n", i);
+}
+
+done:
+printf("Finished!\n");
+```
+
+**Output**:
+```
+i = 2
+Finished!
+```
+
+**Why this happened**:
+1. `i = 1`: `continue` skipped the rest
+2. `i = 2`: Printed normally
+3. `i = 3`: `goto done` jumped out entirely
+4. `i = 4`: Never reached because of the `goto`
+
+## Simple Summary
+
+1. **Labels**: Bookmarks in code that `goto` can jump to
+2. **Label forms**: Names (C), Numbers (Pascal), or Variables (PL/I - dangerous!)
+3. **`break`**: Clean way to exit a loop early
+4. **`continue`**: Clean way to skip to next loop iteration
+5. **Modern preference**: Use `break` and `continue` instead of `goto` when possible
+
+**Key Insight**: `break` and `continue` are like "tamed" versions of `goto`. They let you control flow but only in safe, predictable ways that don't create spaghetti code!
+
+***
+***
+
+# Structured Sequence Control Explained
+
+## What is Structured Sequence Control?
+
+**Structured sequence control** means using control structures that have **ONE entry point and ONE exit point**. This makes your code much easier to understand and follow.
+
+### The "One-In, One-Out" Principle
+
+Imagine a train tunnel:
+- You enter at ONE clearly marked entrance
+- You exit at ONE clearly marked exit
+- You can't magically appear in the middle of the tunnel
+- You can't disappear from the middle
+
+This is how structured control statements work!
+
+### Visual Comparison
+
+**Unstructured (using `goto` - messy):**
+```
+     ┌───────┐
+     │ Start │
+     └───┬───┘
+         │
+    ┌────▼────┐
+    │ Statement│
+    │   A     │
+    └────┬────┘
+         │
+    ┌────▼────┐
+    │ goto L1 │─────────┐
+    └─────────┘         │
+         │              │
+    ┌────▼─────┐        │
+    │ Statement│        │
+    │   B      │        │
+    └──────────┘        │
+                        │
+    ┌──────┐            │
+    │ L3:  │            │
+    │ ...  │            │
+    └──────┘            │
+                        │
+    ┌──────┐            │
+    │ L1:  │◀───────────┘
+    │ ...  │
+    └──────┘
+```
+
+**Structured (clean and predictable):**
+```
+     ┌───────┐
+     │ Start │
+     └───┬───┘
+         │
+    ┌────▼─────┐
+    │ Statement│
+    │   A      │
+    └────┬─────┘
+         │
+    ┌────▼───────────┐
+    │ if (condition) │
+    └────┬───────────┘
+         │
+    ┌────┴─────┐
+    ▼          ▼
+┌──────┐   ┌──────┐
+│ Then │   │ Else │
+│ Block│   │ Block│
+└────┬─┘   └────┬─┘
+     │          │
+     └────┬─────┘
+          │
+     ┌────▼────┐
+     │ Continue│
+     └─────────┘
+```
+
+## Why Structured Control is Better
+
+### 1. **Code Matches Text**
+The flow of execution matches the sequence of statements as they appear in your code file.
+
+**Example of matching flow:**
+```python
+# What you read = what happens
+x = 10            # Line 1: Set x to 10
+if x > 5:         # Line 2: Check if x > 5
+    print("Big")  # Line 3: Only if true
+print("Done")     # Line 4: Always happens
+```
+
+### 2. **Easier to Debug**
+If something goes wrong, you can follow the code from top to bottom without jumping around.
+
+### 3. **Easier to Modify**
+You can change one part without worrying about breaking connections elsewhere.
+
+## Selection Statements: Making Choices
+
+**Selection statements** let your program choose between different paths.
+
+### The Three Types of Selection:
+
+## 1. Single-Way Selection (If-Only)
+
+**Simple meaning**: "Do this ONLY IF something is true"
+
+**Code Structure**:
+```c
+if (condition) {
+    // Code to execute ONLY if condition is true
+}
+// Code that always executes
+```
+
+**Visualization**:
+```
+        ┌───────────────┐
+        │   Condition   │
+        │   Check       │
+        └───────┬───────┘
+                │
+        true ┌──┴──┐ false
+            ▼      ▼
+    ┌─────────┐    │
+    │ Execute │    │
+    │  Code   │    │
+    └─────────┘    │
+           │       │
+           └───┬───┘
+               ▼
+        Continue with
+        rest of program
+```
+
+**Real Example**:
+```c
+// Single-way selection
+int age = 18;
+
+if (age >= 18) {
+    printf("You can vote!\n");
+}
+
+printf("Program continues...\n");
+```
+
+## 2. Two-Way Selection (If-Else)
+
+**Simple meaning**: "Do this IF true, otherwise do that"
+
+**Code Structure**:
+```c
+if (condition) {
+    // Code if condition is TRUE
+} else {
+    // Code if condition is FALSE
+}
+// Code that always executes
+```
+
+**Visualization**:
+```
+        ┌───────────────┐
+        │   Condition   │
+        │   Check       │
+        └───────┬───────┘
+                │
+        true ┌──┴──┐ false
+             ▼     ▼
+    ┌─────────┐  ┌─────────┐
+    │   Then  │  │   Else  │
+    │  Block  │  │  Block  │
+    └─────────┘  └─────────┘
+           │       │
+           └───┬───┘
+               ▼
+        Continue with
+        rest of program
+```
+
+**Real Example**:
+```c
+// Two-way selection
+int score = 75;
+
+if (score >= 50) {
+    printf("You passed!\n");
+} else {
+    printf("You failed.\n");
+}
+
+printf("Exam complete.\n");
+```
+
+## 3. N-Way Selection (Multiple Choices)
+
+**Simple meaning**: "Choose from many options"
+
+### Option A: If-Else Chain
+```c
+if (grade == 'A') {
+    printf("Excellent!\n");
+} else if (grade == 'B') {
+    printf("Good!\n");
+} else if (grade == 'C') {
+    printf("Average\n");
+} else if (grade == 'D') {
+    printf("Poor\n");
+} else {
+    printf("Fail\n");
+}
+```
+
+### Option B: Switch Statement
+```c
+switch (grade) {
+    case 'A':
+        printf("Excellent!\n");
+        break;
+    case 'B':
+        printf("Good!\n");
+        break;
+    case 'C':
+        printf("Average\n");
+        break;
+    case 'D':
+        printf("Poor\n");
+        break;
+    default:
+        printf("Fail\n");
+}
+```
+
+**Visualization of N-Way Selection**:
+```
+        ┌───────────────┐
+        │   Check       │
+        │   Value       │
+        └───────┬───────┘
+                │
+        ┌───────┴───────┐
+        ▼       ▼       ▼
+    ┌─────┐ ┌─────┐ ┌─────┐
+    │Case1│ │Case2│ │Case3│
+    └─────┘ └─────┘ └─────┘
+        │       │       │
+        └───┬───┴───┬───┘
+            ▼       ▼
+    ┌───────────────┐
+    │   Default     │
+    │   Case        │
+    └───────┬───────┘
+            ▼
+        Continue
+```
+
+## Why These Are "One-In, One-Out"
+
+Let's trace through an `if-else` statement:
+
+```
+ENTER → if (condition) → [Either Then or Else] → EXIT → Continue
+        ↑                                    ↑
+        Only ONE way in                      Only ONE way out
+```
+
+**Key Characteristics**:
+1. **One Entry Point**: You always enter at the `if (condition)`
+2. **One Exit Point**: You always exit after the `if` block (or `else` block) completes
+3. **No Surprises**: You can't jump into the middle from somewhere else
+4. **No Escapes**: You can't jump out from the middle (except with `break`/`return`, but those are controlled)
+
+## Simple Summary
+
+1. **Structured Control**: One entrance, one exit - makes code predictable
+2. **Selection Statements**: Let programs make decisions
+3. **Three Types**:
+   - **Single-way**: `if` (do only if true)
+   - **Two-way**: `if-else` (choose between two options)
+   - **N-way**: `if-else-if` chain or `switch` (choose between many options)
+4. **Matching Text and Flow**: What you read in the code is what happens
+
+**Key Insight**: Structured programming is like building with LEGO blocks. Each block (control structure) has standard connections (one in, one out), so you can build complex programs without creating a tangled mess!
+
+***
+***
+
+# Single-Way Selection Explained
+
+## What is Single-Way Selection?
+
+**Single-way selection** is the simplest form of decision-making in programming. It means:  
+**"Do something ONLY IF a condition is true"**  
+If the condition is false, just skip it and continue.
+
+## Historical Examples
+
+### 1. FORTRAN's Approach (Early Version)
+
+**FORTRAN** (Formula Translation) was one of the first high-level programming languages (created in 1957). It didn't have modern `if` statements at first!
+
+**FORTRAN Code Example:**
+```fortran
+      IF (.NOT. Condition) GO TO 30
+      Statement 1
+      Statement 2
+      ......
+      Statement n
+   30 CONTINUE
+```
+
+**What this does:**
+```
+Check: Is the condition FALSE?
+    If YES → Jump to label 30 (skip the statements)
+    If NO → Continue with Statement 1, 2, ..., n
+```
+
+**Visualization:**
+```
+      ┌─────────────────────┐
+      │ IF (.NOT. Condition)│
+      │    GO TO 30         │
+      └──────────┬──────────┘
+                 │
+        false? ┌─┴─┐ true?
+               ▼   ▼
+          ┌─────┐ ┌─────────────┐
+          │ Do  │ │ Skip to 30  │
+          │Stat1│ │ (jump over  │
+          │Stat2│ │  the code)  │
+          │ ... │ └──────┬──────┘
+          │StatN│        │
+          └─────┘        │
+              │          │
+              └─────┬────┘
+                    ▼
+              30: CONTINUE
+              (Continue here
+               either way)
+```
+
+**How to read it in plain English:**
+> "If the condition is NOT true, then GO TO line 30 (which skips all the statements). Otherwise, execute the statements and then reach line 30 normally."
+
+**Example in context:**
+```fortran
+      IF (.NOT. (AGE .GE. 18)) GO TO 30
+      PRINT *, 'You can vote!'
+      PRINT *, 'Register now.'
+   30 CONTINUE
+      PRINT *, 'Program continues...'
+```
+
+This prints "You can vote!" and "Register now." only if `AGE` is 18 or older.
+
+### 2. ALGOL 60's Modern Approach
+
+**ALGOL 60** (Algorithmic Language 1960) introduced a much cleaner syntax that looks like what we use today.
+
+**ALGOL 60 Code Example:**
+```algol
+if (Boolean expr) then
+    begin
+        Statement 1;
+        Statement 2;
+        ......
+        Statement n;
+    end
+```
+
+**What this does:**
+```
+Check: Is the Boolean expression true?
+    If YES → Execute all statements between begin and end
+    If NO → Skip the entire block
+```
+
+**Visualization:**
+```
+      ┌─────────────────┐
+      │ if (condition)  │
+      │ then            │
+      └────────┬────────┘
+               │
+        true ┌─┴──────────┐ false
+             ▼            ▼
+      ┌─────────────┐     │
+      │ begin       │     │
+      │   Stat1;    │     │
+      │   Stat2;    │     │
+      │   ...       │     │
+      │   StatN;    │     │
+      │ end;        │     │
+      └─────────────┘     │
+             │            │
+             └──────┬─────┘
+                    ▼
+            Continue with next
+            statement
+```
+
+**Example in context:**
+```algol
+if (age >= 18) then
+    begin
+        print("You can vote!");
+        print("Register now.");
+    end;
+print("Program continues...");
+```
+
+## Comparing the Two Approaches
+
+### FORTRAN's Way (Using `GO TO` to Skip)
+```fortran
+IF (.NOT. Condition) GO TO 30
+! Code to execute if condition is TRUE
+30 CONTINUE
+```
+
+**Pros:**
+- Simple for the computer to understand
+- Works with early compiler technology
+
+**Cons:**
+- Harder for humans to read
+- Uses negative logic (`.NOT. Condition`)
+- Requires thinking backwards
+- Creates "invisible" code path
+
+### ALGOL 60's Way (Using `if-then` Block)
+```algol
+if (Condition) then
+    begin
+        ! Code to execute if condition is TRUE
+    end;
+```
+
+**Pros:**
+- Natural to read: "if condition then do this"
+- Positive logic (easier to understand)
+- Clearly shows what's being skipped
+- Modern languages still use this pattern
+
+**Cons:**
+- More complex for early compilers
+- Requires understanding of code blocks
+
+## The Evolution to Modern Syntax
+
+**FORTRAN evolved** and later versions added better `IF` statements:
+```fortran
+! Later FORTRAN (Fortran 77 onward)
+IF (Condition) THEN
+    Statement 1
+    Statement 2
+    ...
+    Statement N
+END IF
+```
+
+**Modern languages** (C, Java, Python, etc.) all use the ALGOL-style approach:
+
+```c
+// C language
+if (condition) {
+    statement1;
+    statement2;
+    // ...
+    statementN;
+}
+```
+
+```python
+# Python
+if condition:
+    statement1
+    statement2
+    # ...
+    statementN
+```
+
+## Why This Matters: The "Positive Logic" Principle
+
+### The Problem with FORTRAN's Negative Logic
+```fortran
+IF (.NOT. (AGE .GE. 18)) GO TO 30
+```
+
+Humans have to think:
+1. "Is age NOT greater than or equal to 18?"
+2. "That means age is less than 18"
+3. "So if age is less than 18, jump to 30"
+4. "Which means skip the voting messages"
+
+**That's a lot of mental gymnastics!**
+
+### The Clarity of ALGOL's Positive Logic
+```algol
+if (age >= 18) then
+```
+
+Humans think:
+1. "If age is 18 or more"
+2. "Then show voting messages"
+
+**Much simpler!**
+
+## Simple Summary
+
+1. **Single-way selection**: Do something only if a condition is true
+2. **FORTRAN's early approach**: Used `GO TO` with negative logic to skip code
+3. **ALGOL 60's improvement**: Introduced `if-then` blocks with positive logic
+4. **Modern languages**: All use the ALGOL-style approach
+5. **Key insight**: Positive logic (`if condition then do`) is easier to understand than negative logic (`if not condition then skip`)
+
+**Historical Note**: This evolution from FORTRAN's `GO TO` approach to ALGOL's structured approach was a major step in making programming more accessible and less error-prone. It's part of why we call it "structured programming" today!
+
+***
+***
+
+
+# Two-Way Selection and the Dangling Else Problem Explained
+
+## What is Two-Way Selection?
+
+**Two-way selection** allows a program to choose between **two different paths** based on a condition. It's like coming to a fork in the road and choosing which way to go.
+
+### Example in Visual Basic (VB)
+
+```vbnet
+If (Boolean_expression) Then
+    statements    ' Then clause
+Else
+    statements    ' Else clause
+End If
+```
+
+**Semantics (what it means):**
+1. **Only one clause executes**: Either the "Then" part OR the "Else" part
+2. **Never both**: Under no circumstances do both clauses execute
+3. **Historical note**: ALGOL 60 was the first language to introduce this clean form
+
+**Visualization:**
+```
+        ┌─────────────────┐
+        │ Check condition │
+        └────────┬────────┘
+                 │
+        true ┌───┴──┐ false
+             ▼      ▼
+    ┌──────────┐ ┌──────────┐
+    │ Then     │ │ Else     │
+    │ Clause   │ │ Clause   │
+    └──────────┘ └──────────┘
+           │          │
+           └────┬─────┘
+                ▼
+         Continue with
+         rest of program
+```
+
+## The Problem: Nesting If-Else Statements
+
+When you put one `if` statement inside another, you can create ambiguity called the **"dangling else" problem**.
+
+### The Ambiguous Example
+
+```pascal
+If sum = 0 then
+    if count = 0 then
+        result := 0
+    else
+        result := 1
+```
+
+**The question is**: Which `if` does the `else` belong to?
+
+### Two Possible Interpretations
+
+#### Interpretation 1: `else` pairs with INNER `if`
+```
+If sum = 0 then
+    if count = 0 then
+        result := 0
+    else
+        result := 1
+```
+
+**Meaning**: 
+- If `sum = 0` AND `count = 0` → `result = 0`
+- If `sum = 0` AND `count ≠ 0` → `result = 1`
+- If `sum ≠ 0` → Do nothing (skip both)
+
+**Visualization**:
+```
+┌─────────────────────────────┐
+│ sum = 0?                    │
+└──────┬──────────────────────┘
+       │
+  true │              false
+       │                 │
+       ▼                 ▼
+┌─────────────┐        (skip)
+│ count = 0?  │
+└──────┬──────┘
+       │
+  true │   false
+       ▼      ▼
+  result=0  result=1
+```
+
+#### Interpretation 2: `else` pairs with OUTER `if`
+```
+If sum = 0 then
+    if count = 0 then
+        result := 0
+else
+    result := 1
+```
+
+**Meaning**:
+- If `sum = 0` AND `count = 0` → `result = 0`
+- If `sum = 0` AND `count ≠ 0` → Do nothing (just the inner `if`)
+- If `sum ≠ 0` → `result = 1`
+
+**Visualization**:
+```
+┌─────────────────────────────┐
+│ sum = 0?                    │
+└──────┬──────────────────────┘
+       │
+  true │              false
+       ▼                 ▼
+┌─────────────┐      result=1
+│ count = 0?  │
+└──────┬──────┘
+       │
+  true │   false
+       ▼      ▼
+  result=0  (skip)
+```
+
+## Solutions to the Dangling Else Problem
+
+### Solution 1: A Rule (Most Languages Use This)
+
+**The Rule**: The `else` clause always pairs with the **most recent unpaired `then` clause**.
+
+This is like matching parentheses: each `else` goes with the closest `if` that doesn't already have an `else`.
+
+**In our example** (using the rule):
+```pascal
+If sum = 0 then
+    if count = 0 then
+        result := 0
+    else      ← This ELSE pairs with the second (inner) IF
+        result := 1
+```
+
+**Most languages** (C, C++, Java, JavaScript, etc.) use this rule.
+
+### Solution 2: Using Compound Statements (Pascal Style)
+
+You can use `begin` and `end` to explicitly group statements.
+
+**Example 1**: Force `else` to pair with INNER `if`
+```pascal
+if sum = 0 then
+begin
+    if count = 0 then
+        result := 0
+    else
+        result := 1
+end
+```
+
+**Example 2**: Force `else` to pair with OUTER `if`
+```pascal
+if sum = 0 then
+begin
+    if count = 0 then
+        result := 0
+end
+else
+    result := 1
+```
+
+**Visual comparison**:
+```
+Example 1:                    Example 2:
+┌─────────────────────┐       ┌─────────────────────┐
+│ if sum=0 then       │       │ if sum=0 then       │
+│   begin             │       │   begin             │
+│     if count=0 then │       │     if count=0 then │
+│       result=0      │       │       result=0      │
+│     else            │       │   end               │
+│       result=1      │       │ else                │
+│   end               │       │   result=1          │
+└─────────────────────┘       └─────────────────────┘
+```
+
+### Solution 3: Selection Closure (Using End Markers)
+
+Some languages use special words to mark the end of `if` statements.
+
+**Example 1**: `else` pairs with INNER `if`
+```ada
+if sum = 0 then
+    if count = 0 then
+        result := 0
+    else
+        result := 1
+    end if
+end if
+```
+
+**Example 2**: `else` pairs with OUTER `if`
+```ada
+if sum = 0 then
+    if count = 0 then
+        result := 0
+    end if
+else
+    result := 1
+end if
+```
+
+**Languages that use this**:
+- Ada: `end if`
+- Shell scripting: `fi` (if backwards)
+- Visual Basic: `End If`
+- Python (uses indentation instead of end markers)
+
+## How It's Implemented at the Hardware Level
+
+At the machine level, all these `if-else` structures get translated to simple **branch and jump instructions**.
+
+### Example Compilation
+```c
+// High-level code
+if (x > 10) {
+    y = 20;
+} else {
+    y = 30;
+}
+```
+
+**Becomes something like this at machine level**:
+```
+1. Compare x with 10
+2. If x <= 10, jump to line 5  (condition is false, so skip then-clause)
+3. Set y = 20                  (then-clause)
+4. Jump to line 6              (skip else-clause)
+5. Set y = 30                  (else-clause)
+6. Continue with next code...
+```
+
+**Visualization**:
+```
+         ┌─────────────┐
+         │ Compare x>10│
+         └──────┬──────┘
+                │
+        true ┌──┴──┐ false
+             ▼     ▼
+        ┌──────┐  ┌──────┐
+        │ y=20 │  │ y=30 │
+        └───┬──┘  └───┬──┘
+            │         │
+            └────┬────┘
+                 ▼
+          Continue here
+```
+
+## Simple Summary
+
+1. **Two-way selection**: `if-else` lets you choose between two paths
+2. **Dangling else problem**: When nesting `if` statements, it's unclear which `if` an `else` belongs to
+3. **Three solutions**:
+   - **Rule**: `else` pairs with the nearest `if` (most common)
+   - **Compound statements**: Use `{ }` or `begin-end` to group code explicitly
+   - **Selection closure**: Use `end if` or similar markers
+4. **Hardware implementation**: All become simple branch/jump instructions
+
+**Key Insight**: Programming languages need clear rules so both humans and compilers know exactly what the code means. The dangling else problem shows why we need these rules!
+
+***
+***
+
+# Multiple Selection Constructs Explained
+
+## What is Multiple Selection?
+
+**Multiple selection** (also called **multi-way branching**) lets your program choose **one path from many possible paths**. It's like having a menu with many options and picking just one.
+
+## Key Questions About Multiple Selection
+
+When designing a multiple selection structure, language designers ask:
+
+1. **Is the entire construct encapsulated in one structure?**
+   - Or can the code be scattered anywhere?
+   
+2. **Is execution restricted to just one segment?**
+   - Or can execution "fall through" to other segments?
+
+3. **Is there a "default" clause for unrepresented values?**
+
+## Historical Approaches
+
+### 1. FORTRAN's Arithmetic IF (The Scattered Approach)
+
+This was one of the first attempts at multiple selection, but it's very messy!
+
+**FORTRAN Code Example:**
+```fortran
+      IF (expression) 10, 20, 30
+   10 ......
+      ...... (code for first case)
+      GO TO 40
+   20 ......
+      ...... (code for second case)
+      GO TO 40
+   30 ......
+      ...... (code for third case)
+   40 ......
+```
+
+**What this does:**
+- Evaluates the arithmetic expression
+- If result is **negative**: jumps to label 10
+- If result is **zero**: jumps to label 20
+- If result is **positive**: jumps to label 30
+
+**Visualization**:
+```
+      ┌─────────────────┐
+      │ IF (expression) │
+      │    10, 20, 30   │
+      └───────┬─────────┘
+              │
+   negative│zero │positive
+      ▼      ▼       ▼
+    ┌────┐ ┌────┐ ┌────┐
+    │ 10 │ │ 20 │ │ 30 │
+    └─┬──┘ └─┬──┘ └─┬──┘
+      ▼      ▼      ▼
+    Code    Code    Code
+      │      │      │
+      └──────┼──────┘
+             ▼
+         Continue at 40
+```
+
+**Why this is bad:**
+1. **Not encapsulated**: Code segments can be anywhere in the program
+2. **Requires GOTOs**: Each segment needs a `GO TO` to jump to the end
+3. **Hard to read**: You have to search for labels 10, 20, 30
+4. **Error-prone**: Easy to forget a `GO TO` and accidentally execute multiple segments
+
+### 2. FORTRAN's Computed GOTO (Slightly Better)
+
+**FORTRAN Code Example:**
+```fortran
+      GO TO (100, 200, 300, 400), index
+  100 ... (code for index = 1)
+      GO TO 500
+  200 ... (code for index = 2)
+      GO TO 500
+  300 ... (code for index = 3)
+      GO TO 500
+  400 ... (code for index = 4)
+  500 CONTINUE
+```
+
+**How it works:**
+- `index` must be 1, 2, 3, or 4
+- If `index = 1`: jump to label 100
+- If `index = 2`: jump to label 200
+- etc.
+
+**Still has problems**: Code is still scattered and needs explicit jumps.
+
+## Modern Approaches: Switch/Case Statements
+
+### 1. C Language Switch Statement
+
+```c
+switch(index) {
+    case 1: statement1;
+    case 2: statement2;
+    case 3: statement3;
+    // ...
+    case n: statementN;
+}
+```
+
+**Key Features of C's switch:**
+1. **Encapsulated**: All cases are inside `{ }`
+2. **Fall-through allowed**: If you don't use `break`, execution continues to next case
+3. **No restriction to single segment**: Can execute multiple cases sequentially
+
+**Visualization of C's switch with fall-through**:
+```
+        ┌──────────────┐
+        │ switch(index)│
+        └──────┬───────┘
+               │
+        ┌──────┴────────┐
+        ▼    ▼     ▼    ▼
+    ┌────┐┌─────┐┌─────┐┌─────┐
+    │case1│case2││case3││caseN│
+    └─┬──┘└─┬───┘└─┬───┘└─┬───┘
+      │     │      │      │
+      ▼─────▼──────▼──────▼─────▶ (execution flows through)
+```
+
+**Example with fall-through**:
+```c
+switch(grade) {
+    case 'A':
+        printf("Excellent!\n");
+        // No break - falls through!
+    case 'B':
+        printf("Good job!\n");
+        break;
+    case 'C':
+        printf("Average\n");
+        break;
+}
+```
+
+If `grade = 'A'`, this prints:
+```
+Excellent!
+Good job!
+```
+
+### 2. Pascal Case Statement (Safer Design)
+
+```pascal
+Case expression of
+    constant_list_1 : statement_1;
+    constant_list_2 : statement_2;
+    constant_list_n : statement_n;
+end;
+```
+
+**Key Features of Pascal's case:**
+1. **Single entry, single exit**: Each case has implicit jump to end
+2. **No fall-through**: Execution stops after each case
+3. **Ordinal type only**: Expression must be integer, char, or boolean
+4. **Constant lists**: Can match multiple values to one case
+
+**Visualization**:
+```
+        ┌─────────────┐
+        │ Case expr   │
+        └──────┬──────┘
+               │
+        ┌──────┴────────────┐
+        ▼     ▼      ▼      ▼
+    ┌─────┐┌─────┐┌─────┐┌─────┐
+    │case1││case2││case3││caseN│
+    └─┬───┘└─┬───┘└─┬───┘└─┬───┘
+      │      │      │      │
+      └──────┴──────┴──────┴───▶ (all jump to same exit point)
+```
+
+**Example with constant lists**:
+```pascal
+Case grade of
+    'A', 'B': writeln('Pass');
+    'C', 'D': writeln('Conditional');
+    'F': writeln('Fail');
+    else writeln('Invalid grade');
+end;
+```
+
+## The Default/Else Clause
+
+### Why We Need a Default Case
+Sometimes the expression value doesn't match any case. What should happen?
+
+**C Language Example with Default**:
+```c
+switch (index) {
+    case 1: 
+        printf("Option 1\n");
+        break;
+    case 2: 
+        printf("Option 2\n");
+        break;
+    case 3:
+    case 4:  // Both 3 and 4 go here
+        printf("Option 3 or 4\n");
+        break;
+    default:  // Anything else goes here
+        printf("Invalid option\n");
+        break;
+}
+```
+
+**Pascal Example with Else**:
+```pascal
+Case day of
+    1..5: writeln('Weekday');
+    6, 7: writeln('Weekend');
+    else writeln('Invalid day');
+end;
+```
+
+## How Switch/Case is Implemented: Jump Tables
+
+At the hardware level, switch/case is often implemented using a **jump table** for efficiency.
+
+### What is a Jump Table?
+A **jump table** is an array in memory where each entry is a jump instruction to the corresponding case.
+
+**Visualization**:
+```
+Memory Address | Instruction
+---------------|-----------------------------------
+Base: 1000     | JUMP to address in table[value]
+               |
+Jump Table:    |
+1004           | JUMP to CASE1_CODE  (for value 0)
+1008           | JUMP to CASE2_CODE  (for value 1)
+1012           | JUMP to CASE3_CODE  (for value 2)
+1016           | JUMP to DEFAULT_CODE (for value 3)
+               |
+CASE1_CODE:    | ... code for case 1 ...
+CASE2_CODE:    | ... code for case 2 ...
+CASE3_CODE:    | ... code for case 3 ...
+DEFAULT_CODE:  | ... default code ...
+```
+
+**How it works**:
+1. Evaluate the expression (e.g., `index`)
+2. Calculate: `jump_address = base_address + (index * 4)` 
+   (assuming each jump instruction is 4 bytes)
+3. Jump to that address in the table
+4. The table entry contains another jump to the actual code
+
+**Example**: If `index = 2`:
+1. Base address = 1000
+2. Jump to: 1000 + (2 × 4) = 1008
+3. Address 1008 contains: JUMP to CASE3_CODE
+4. Execute case 3 code
+
+**Why use jump tables?**
+- **Fast**: Single calculation, then jump (O(1) time)
+- **Efficient for many cases**: Better than many `if-else if` checks
+
+## Simple Summary
+
+1. **Multiple selection**: Choose one path from many (like a menu)
+2. **Historical approaches**: FORTRAN's arithmetic IF (scattered, messy)
+3. **Modern approaches**: 
+   - **C switch**: Allows fall-through, needs `break`
+   - **Pascal case**: No fall-through, safer
+4. **Default clause**: Handles unexpected values
+5. **Implementation**: Often uses jump tables for efficiency
+
+**Key Insight**: Multiple selection structures are like super-powered `if-else if` chains that can be optimized by the compiler using jump tables. Different languages make different trade-offs between flexibility (C's fall-through) and safety (Pascal's strict single-case execution).
+
+***
+***
+
+# Case vs Nested-If, and Iteration Statements Explained
+
+## Case vs Nested-If: What's the Difference?
+
+### The Key Question
+**Can a collection of nested-if statements be simulated with a `case` statement?**
+
+**Answer: NO**, and here's why:
+
+### The Fundamental Difference
+
+**Nested-if structure**: Each selectable statement is chosen based on a **Boolean expression**
+
+**Case/Switch structure**: Each case is chosen based on **matching a single value**
+
+### Example Comparison
+
+**Nested-if (using Boolean expressions):**
+```c
+if (temperature > 30 && humidity > 80) {
+    printf("Hot and humid\n");
+} else if (wind_speed > 50) {
+    printf("Very windy\n");
+} else if (pressure < 1000 || is_raining) {
+    printf("Stormy weather\n");
+} else {
+    printf("Normal weather\n");
+}
+```
+
+**Case/Switch (matching single values):**
+```c
+switch(day_of_week) {
+    case 1: printf("Monday\n"); break;
+    case 2: printf("Tuesday\n"); break;
+    case 3: printf("Wednesday\n"); break;
+    // ... etc
+}
+```
+
+### Why You Can't Replace All Nested-If with Case
+
+**Nested-if can have:**
+1. **Different variables** in each condition
+2. **Complex Boolean expressions** (with AND, OR, NOT)
+3. **Range checks** (like `x > 10 && x < 20`)
+4. **Function calls** in conditions
+
+**Case/Switch only has:**
+1. **Single expression** evaluated once
+2. **Exact value matching**
+3. **No complex conditions** within cases
+
+**Visual Comparison**:
+
+**Nested-if (flexible but potentially slower):**
+```
+        ┌─────────────────┐
+        │ Condition 1     │  (could check temp & humidity)
+        │ (Boolean expr)  │
+        └────────┬────────┘
+          true   │   false
+            ▼          ▼
+       Do action   ┌─────────────────┐
+                   │ Condition 2     │  (could check wind speed)
+                   │ (Boolean expr)  │
+                   └────────┬────────┘
+                     true   │   false
+                       ▼          ▼
+                   Do action   Continue checking...
+```
+
+**Case (fast but limited):**
+```
+        ┌─────────────────┐
+        │ Evaluate expr   │  (gets a single value)
+        └────────┬────────┘
+                 │
+        ┌────────┴───────┐
+        ▼        ▼       ▼
+    Compare   Compare   Compare
+    to 1      to 2      to 3
+       │        │        │
+       ▼        ▼        ▼
+    Action 1  Action 2  Action 3
+```
+
+## Iteration Statements (Loops)
+
+### What are Iteration Statements?
+**Iteration statements** cause a statement or collection of statements to be executed **zero or more times**.
+
+### Basic Structure of a Loop
+Every loop has two parts:
+
+1. **Head**: Controls how many times the loop runs
+2. **Body**: The statements that get repeated
+
+```
+HEAD {
+    BODY (the code to repeat)
+}
+```
+
+**Simple example**:
+```c
+for (int i = 0; i < 5; i++) {  // HEAD
+    printf("Hello\n");         // BODY
+}
+```
+
+## Design Issues for Loops
+
+When designing a loop structure, language designers must decide:
+
+### 1. How is the iteration controlled?
+- **Logical control**: Continue while a condition is true (e.g., `while (x > 0)`)
+- **Counting control**: Repeat a fixed number of times (e.g., `for i = 1 to 10`)
+- **Combination**: Both (like C's `for` loop: `for (i=0; i<n; i++)`)
+
+### 2. Where should the control mechanism appear?
+- **Top-tested (pre-test)**: Check condition BEFORE body (may run 0 times)
+- **Bottom-tested (post-test)**: Check condition AFTER body (runs at least once)
+
+**Visual comparison**:
+
+**Top-tested (while loop - check first):**
+```
+        ┌─────────────┐
+        │  Condition  │  ← Check BEFORE
+        │    true?    │
+        └──────┬──────┘
+        false  │  true
+         │     │
+         │     ▼
+         │  ┌──────┐
+         │  │ Body │  ← Execute if true
+         │  └──────┘
+         │     │
+         │     ▼
+         └───repeat?
+```
+
+**Bottom-tested (do-while loop - check last):**
+```
+        ┌──────┐
+        │ Body │  ← Execute FIRST
+        └──────┘
+           │
+           ▼
+        ┌─────────────┐
+        │  Condition  │  ← Check AFTER
+        │    true?    │
+        └──────┬──────┘
+        false  │  true
+         │     │
+         │     ▼
+         │   repeat
+         │
+         ▼
+       exit
+```
+
+### 3. What is the type and scope of the loop variable?
+- What data type can the loop variable be?
+- Is it visible only inside the loop or also outside?
+
+### 4. What values does the loop variable have at loop termination?
+- Does it keep its last value?
+- Is it undefined after the loop ends?
+
+### 5. Can we change the loop variable inside the loop?
+And if we do, does it affect the loop control?
+
+**FORTRAN 77 Example**:
+```fortran
+      DO 100 I = 1, 10, 2  ! I starts at 1, ends at 10, steps by 2
+        I = I * 2          ! Changing I inside the loop!
+        PRINT *, I
+  100 CONTINUE
+```
+
+In FORTRAN 77, the loop parameters (1, 10, 2) are used to compute an **iteration count** at the beginning:
+- Start: 1, End: 10, Step: 2
+- Iteration count = ((10 - 1) / 2) + 1 = 5 iterations
+
+**Key insight**: Even though `I` is changed inside, the loop still runs 5 times because FORTRAN uses the **pre-computed iteration count**, not the current value of `I`.
+
+### 6. How often are loop parameters evaluated?
+- **Once at the beginning** (like FORTRAN): More efficient
+- **Every iteration** (like some language constructs): More flexible
+
+## Types of Iterative Statements
+
+The slides list several types of loops:
+
+### 1. Simple Repetition
+- Just repeat a fixed number of times
+- Example: `repeat 10 times { ... }`
+
+### 2. Counter-Controlled Loops
+- Use a counter variable
+- Example: `for i = 1 to 10`
+
+### 3. Logically Controlled Loops
+- Continue while/until a condition is true/false
+- Example: `while (condition)`, `do-while (condition)`
+
+### 4. User-Located Loop Control Mechanism
+- Manual control statements
+- Example: `break`, `continue`, `goto`
+
+### 5. Iteration Based on Data Structures
+- Loop over elements in a data structure
+- Example: `for item in list`, `for key in dictionary`
+
+### 6. User-Defined Iteration Control
+- Custom iteration logic
+- Example: Python's iterators with `__iter__()` and `__next__()`
+
+## Simple Summary
+
+1. **Case vs Nested-If**: Case matches values, nested-if evaluates Boolean expressions
+2. **Iteration statements**: Repeat code zero or more times
+3. **Loop design issues**: Control type, test position, variable scope, mutability
+4. **FORTRAN example**: Pre-computes iteration count, so changing loop variable doesn't affect control
+5. **Loop types**: Simple, counter-controlled, logical, user-controlled, data structure, custom
+
+**Key Insight**: Language designers make different choices about loops based on whether they prioritize efficiency (evaluating once) or flexibility (allowing dynamic changes). Understanding these design decisions helps you write better code in any language!
+
+***
+***
+
+# Simple Repetition Loops Explained
+
+## What is Simple Repetition?
+
+**Simple repetition** is the most basic type of loop: it repeats a block of code a **fixed number of times**. You just say "do this K times" and the computer does it exactly K times.
+
+### COBOL Example
+
+```cobol
+PERFORM body K TIMES.
+```
+
+**What this means:**
+- `PERFORM` = "do" or "execute"
+- `body` = the code to repeat
+- `K` = how many times to repeat it
+- `TIMES` = indicates it's a count-based loop
+
+**Visualization**:
+```
+        ┌─────────────┐
+        │ Evaluate K  │  ← Figure out how many times to loop
+        └──────┬──────┘
+               │
+               ▼
+        Set counter = K
+               │
+               ▼
+        ┌─────────────┐
+        │ Counter > 0?│
+        └──────┬──────┘
+        No     │ Yes
+         │     │
+         │     ▼
+         │  ┌──────┐
+         │  │ Body │  ← Execute the code
+         │  └──────┘
+         │     │
+         │     ▼
+         │  Decrement
+         │  counter
+         │     │
+         │     └───┐
+         └─────────┘
+               │
+               ▼
+        Continue with
+        rest of program
+```
+
+## The Two Main Design Issues
+
+### Issue 1: Can K be re-evaluated during execution?
+
+**The question**: If the value of `K` changes while the loop is running, should the loop adjust how many times it runs?
+
+#### Option A: Evaluate K once at the beginning (Static)
+```cobol
+MOVE 5 TO K.
+PERFORM body K TIMES.  ← K is evaluated once, sets loop to 5 iterations
+```
+
+Even if we change `K` inside the loop:
+```cobol
+MOVE 5 TO K.
+PERFORM body K TIMES.  ← Will run 5 times, even if K changes inside
+
+body.
+    ADD 1 TO K.  ← Changing K here doesn't affect loop count!
+```
+
+**Pros**: Efficient, predictable
+**Cons**: Not flexible
+
+#### Option B: Re-evaluate K each time (Dynamic)
+```cobol
+MOVE 5 TO K.
+PERFORM body K TIMES.  ← Checks K value each iteration
+```
+
+If we change `K` inside:
+```cobol
+MOVE 5 TO K.
+PERFORM body K TIMES.
+
+body.
+    ADD 1 TO K.  ← This could make the loop run forever!
+```
+
+**Pros**: More flexible
+**Cons**: Could cause infinite loops, harder to debug
+
+**Most languages choose Option A** (evaluate once) for simplicity and safety.
+
+### Issue 2: What happens if K is zero or negative?
+
+#### Three possible behaviors:
+
+**Behavior 1: Skip the loop entirely (common)**
+```cobol
+MOVE 0 TO K.
+PERFORM body K TIMES.  ← Body executes 0 times (skipped)
+```
+
+**Behavior 2: Treat negative as positive (less common)**
+```cobol
+MOVE -5 TO K.
+PERFORM body K TIMES.  ← Might treat as 5 times (absolute value)
+```
+
+**Behavior 3: Error/undefined (problematic)**
+```cobol
+MOVE -5 TO K.
+PERFORM body K TIMES.  ← Could crash or behave unpredictably
+```
+
+## Modern Language Examples
+
+### Python's Approach
+```python
+# Python's for-loop with range()
+for i in range(5):  # Evaluates range(5) once, then loops 5 times
+    print(i)
+    # Changing the stop value inside doesn't affect loop count
+```
+
+**Python handles K=0 or negative:**
+```python
+for i in range(0):    # No iterations
+    print("This won't print")
+
+for i in range(-5):   # No iterations (treats as empty range)
+    print("This won't print either")
+```
+
+### JavaScript's Approach
+```javascript
+// Not directly supported in JavaScript
+// You'd use a for-loop instead
+for (let i = 0; i < K; i++) {
+    // K is evaluated each iteration in this case!
+    console.log(i);
+}
+```
+
+**JavaScript's for-loop actually re-evaluates the condition each time!**
+
+## The Performance vs. Flexibility Trade-off
+
+### Static Evaluation (COBOL-style)
+```
+Step 1: Compute K = 5
+Step 2: Set loop counter = 5
+Step 3: Repeat 5 times
+```
+
+**Advantages**:
+- Fast: Only compute K once
+- Predictable: Always runs the same number of times
+- Safe: Can't accidentally create infinite loop by changing K
+
+### Dynamic Evaluation
+```
+Step 1: Check K (K = 5)
+Step 2: Run loop
+Step 3: Check K again (maybe changed to 6)
+Step 4: Run loop
+Step 5: Check K again (maybe changed to 7)
+... and so on
+```
+
+**Advantages**:
+- Flexible: Can adjust loop count dynamically
+- Responsive: Reacts to changing conditions
+
+## Simple Summary
+
+1. **Simple repetition**: "Do this K times" loops
+2. **Design issue 1**: Most languages evaluate K once at start (safer)
+3. **Design issue 2**: Most languages skip loop if K ≤ 0 (sensible)
+4. **Trade-off**: Static evaluation = faster and safer; Dynamic evaluation = more flexible
+
+**Key Insight**: Language designers usually choose safety and predictability over flexibility for simple repetition loops. That's why most languages decide the loop count at the beginning and stick to it!
+
+**Real-world analogy**: If a recipe says "stir 5 times," you stir 5 times. Even if halfway through you think "maybe I should stir 10 times," you still follow the original instruction. The recipe (like the loop) was decided in advance!
+
+***
+***
+
+
+# Counter-Controlled Loops Explained
+
+## What is a Counter-Controlled Loop?
+
+A **counter-controlled loop** is a loop that uses a **loop variable** (also called a counter) to control how many times it runs. The loop variable takes on a sequence of values, and you specify:
+
+1. **Initial value**: Where to start
+2. **Terminal value**: Where to stop
+3. **Step-size**: How much to change each time
+
+These three specifications (initial, terminal, step-size) are called the **loop parameters**.
+
+## How Counter-Controlled Loops Work
+
+### Basic Structure
+```
+for loop_variable = initial_value to terminal_value step step_size do
+    loop_body
+```
+
+**Visualization**:
+```
+        ┌─────────────────┐
+        │ Set loop_var =  │
+        │   initial_value │
+        └────────┬────────┘
+                 │
+                 ▼
+        ┌─────────────────┐
+        │ Check if        │
+        │ loop_var has    │
+        │ passed terminal │
+        │ value?          │
+        └────────┬────────┘
+       Not passed│  Passed
+           │     │     │
+           │     ▼     │
+           │  ┌─────┐  │
+           │  │Body │  │
+           │  └─────┘  │
+           │     │     │
+           │     ▼     │
+           │  ┌─────┐  │
+           │  │Add  │──┘
+           │  │step │
+           │  └─────┘
+           │
+           ▼
+    Continue with
+    rest of program
+```
+
+## Example in Different Languages
+
+### Pascal Example
+```pascal
+for i := 1 to 10 do
+    writeln(i);
+```
+
+**Loop parameters**:
+- **Loop variable**: `i`
+- **Initial value**: 1
+- **Terminal value**: 10
+- **Step-size**: 1 (implicit in Pascal's `to`)
+
+### Pascal Example with Step (downto)
+```pascal
+for i := 10 downto 1 do
+    writeln(i);
+```
+
+**Loop parameters**:
+- **Loop variable**: `i`
+- **Initial value**: 10
+- **Terminal value**: 1
+- **Step-size**: -1 (implicit in `downto`)
+
+## Important Pascal Rule: Undefined Loop Variable After Loop
+
+The slide mentions a crucial detail about Pascal:
+
+> "In Pascal at normal loop termination the loop variable is undefined."
+
+### What This Means
+
+**After the loop finishes normally, you cannot use the loop variable's value!**
+
+### Example
+```pascal
+program Example;
+var i: integer;
+begin
+    for i := 1 to 5 do
+        writeln('Inside loop: i = ', i);
+    
+    // DANGER: i is UNDEFINED here!
+    // This might print 6, or garbage, or cause an error
+    writeln('After loop: i = ', i);  ← WRONG! Don't do this!
+end.
+```
+
+**Why is this a rule?**
+1. **Compiler optimization**: The compiler might use registers differently after the loop
+2. **Language specification**: The Pascal standard says the value becomes undefined
+3. **Portability**: Ensures code behaves the same on different compilers
+
+## How Other Languages Handle This
+
+### C/C++: Loop Variable Keeps Last Value
+```c
+int i;
+for (i = 1; i <= 5; i++) {
+    printf("Inside: %d\n", i);
+}
+// i = 6 here (the value that made the condition false)
+printf("After: %d\n", i);  // Prints 6
+```
+
+### Python: Loop Variable Keeps Last Value
+```python
+for i in range(1, 6):
+    print(f"Inside: {i}")
+# i = 5 here (last value from the range)
+print(f"After: {i}")  # Prints 5
+```
+
+### Java: Depends on Scope
+```java
+// If declared outside the loop
+int i;
+for (i = 1; i <= 5; i++) {
+    System.out.println("Inside: " + i);
+}
+// i = 6 here
+
+// If declared inside the loop
+for (int j = 1; j <= 5; j++) {
+    System.out.println("Inside: " + j);
+}
+// j doesn't exist here - scope is only inside the loop
+```
+
+## Key Design Considerations for Counter-Controlled Loops
+
+### 1. Type of Loop Variable
+- Usually integer, but some languages allow other types
+- Some languages allow floating-point counters (but this can cause precision issues)
+
+### 2. Step Size Direction
+- Positive step: Counts up (1 to 10)
+- Negative step: Counts down (10 to 1)
+- Zero step: Would cause infinite loop (usually not allowed)
+
+### 3. When Loop Parameters Are Evaluated
+- **Once at start** (most languages): More efficient
+- **Each iteration**: More flexible but slower
+
+### 4. Can You Modify the Loop Variable Inside?
+Most languages **discourage or forbid** modifying the loop variable inside the body because it makes the program hard to understand.
+
+**Bad Example** (in languages that allow it):
+```pascal
+for i := 1 to 10 do
+begin
+    writeln(i);
+    i := i + 2;  ← Changing loop variable - CONFUSING!
+end;
+```
+
+### 5. What Happens If Initial Value Already Past Terminal?
+```pascal
+for i := 10 to 1 do  ← Initial (10) is already past terminal (1)
+    writeln(i);      ← This won't execute at all
+```
+
+Most languages handle this by **skipping the loop entirely** when the initial value is already beyond the terminal value in the step direction.
+
+## Simple Summary
+
+1. **Counter-controlled loops**: Use a loop variable with initial, terminal, and step values
+2. **Loop parameters**: Initial value, terminal value, step-size
+3. **Pascal's rule**: Loop variable becomes undefined after the loop
+4. **Other languages**: May keep the last value or restrict scope
+5. **Design principles**: Make loops predictable and prevent confusing modifications
+
+**Key Insight**: Counter-controlled loops are like counting steps: "Take 10 steps forward, each step 1 foot long." The loop variable is your current step number. In Pascal, once you've taken your 10 steps, you forget what step number you're on (undefined). In other languages, you remember you just took step 10 (or 11, depending on the language)!
+
+***
+***
+
+# FORTRAN DO Loops: Evolution from FORTRAN IV to FORTRAN 90
+
+## What is a FORTRAN DO Loop?
+
+The **DO loop** in FORTRAN is the language's counter-controlled loop structure. The syntax looks similar between versions, but the meaning (semantics) changed significantly.
+
+## FORTRAN IV DO Loop (1960s)
+
+### Syntax
+```fortran
+DO label1 variable = initial, terminal [, stepsize]
+```
+
+### Key Rules and Restrictions:
+
+**1. Loop parameters must be positive integers:**
+```fortran
+DO 100 I = 1, 10, 2    ! OK: 1, 10, 2 are positive integers
+DO 100 I = -1, 10, 2   ! ERROR: -1 is negative (not allowed)
+```
+
+**2. Loop variable undefined after normal exit:**
+```fortran
+DO 100 I = 1, 5
+   WRITE(*,*) I
+100 CONTINUE
+WRITE(*,*) I    ! ERROR: I is undefined here!
+```
+
+**3. Loop parameters cannot be changed inside the loop:**
+```fortran
+DO 100 I = 1, 10
+   I = 5       ! NOT ALLOWED: Cannot change loop variable
+   J = I + 2    ! Allowed: Using I is OK
+100 CONTINUE
+```
+
+**4. Loop parameters evaluated only once:**
+```fortran
+K = 5
+DO 100 I = 1, K   ! K is evaluated once (value 5)
+   K = K + 1      ! Changing K doesn't change loop count
+100 CONTINUE      ! Still runs 5 times
+```
+
+**5. Allow multiple entry and exit points:**
+```fortran
+DO 100 I = 1, 10
+   IF (I .EQ. 5) GO TO 200   ! Exit early
+   WRITE(*,*) I
+100 CONTINUE
+200 CONTINUE
+
+! Can also jump into the middle (not recommended!)
+GO TO 300
+DO 100 I = 1, 10
+300 WRITE(*,*) "Jumped into loop!"  ! BAD: Multiple entry
+100 CONTINUE
+```
+
+**Visualization of FORTRAN IV DO Loop:**
+```
+        ┌─────────────────────────────┐
+        │ DO 100 I = initial, terminal│
+        │          [, stepsize]       │
+        └──────────────┬──────────────┘
+                       │
+                Evaluate parameters
+                (once, at start)
+                       │
+                       ▼
+                 Set I = initial
+                       │
+                       ▼
+                ┌──────────────┐
+                │ Check if     │
+                │ I past       │
+                │ terminal?    │
+                └──────┬───────┘
+         Not past      │      Past
+            │          │        │
+            ▼          │        ▼
+        ┌───────┐      │   Loop ends
+        │ Body  │      │   (I undefined)
+        └───────┘      │
+            │          │
+            ▼          │
+        I = I + step───┘
+            │
+            │
+            ▼
+        Back to check
+```
+
+## FORTRAN 77 & 90 DO Loop (Modern Versions)
+
+### Syntax (same but semantics different)
+```fortran
+DO label1 variable = initial, terminal [, stepsize]
+```
+
+### Key Improvements and Changes:
+
+**1. Loop variable can be integer, real, or double:**
+```fortran
+DO 100 I = 1, 10          ! Integer - OK
+DO 100 X = 1.0, 10.0, 0.5 ! Real - OK
+DO 100 D = 1.0D0, 10.0D0  ! Double precision - OK
+```
+
+**2. Loop parameters can be expressions and can be negative:**
+```fortran
+DO 100 I = START, FINISH, STEP   ! All can be variables/expressions
+DO 100 I = -10, 10, 2            ! Negative initial - OK
+DO 100 I = 10, -10, -2           ! Negative step - OK
+```
+
+**3. Loop parameters evaluated once to generate iteration count:**
+This is the **most important change**!
+
+**How it works:**
+1. At the start, FORTRAN computes an **iteration count**
+2. Formula: `MAX(INT((terminal - initial + stepsize) / stepsize), 0)`
+3. This count is stored internally
+4. Changing parameters inside doesn't affect the count
+
+**Example:**
+```fortran
+I = 1
+J = 10
+K = 2
+DO 100 M = I, J, K   ! Iteration count = MAX(INT((10-1+2)/2),0) = 5
+   I = I + 5         ! Changing I doesn't matter
+   J = J - 3         ! Changing J doesn't matter
+   K = K + 1         ! Changing K doesn't matter
+100 CONTINUE         ! Still runs exactly 5 times
+```
+
+**Visualization of FORTRAN 77/90 DO Loop:**
+```
+        ┌─────────────────────────────┐
+        │ DO 100 I = initial, terminal│
+        │          [, stepsize]       │
+        └──────────────┬──────────────┘
+                       │
+                Evaluate parameters
+                (once, at start)
+                       │
+                       ▼
+           Compute iteration count:
+           MAX(INT((term-init+step)/step),0)
+                       │
+                       ▼
+                 Set counter = count
+                       │
+                       ▼
+                ┌──────────────┐
+                │ counter > 0? │
+                └──────┬───────┘
+            Yes        │        No
+            │          │        │
+            ▼          │        ▼
+        ┌───────┐      │   Loop ends
+        │ Body  │      │   (I has last value)
+        └───────┘      │
+            │          │
+            ▼          │
+        counter =      │
+        counter - 1────┘
+        I = I + step
+            │
+            │
+            ▼
+        Back to check
+```
+
+## Key Differences Summary
+
+| Feature | FORTRAN IV | FORTRAN 77/90 |
+|---------|------------|---------------|
+| **Parameter types** | Positive integers only | Integer, real, double |
+| **Parameter values** | Must be positive | Can be negative |
+| **Parameter evaluation** | Once at start | Once at start |
+| **Iteration control** | Based on loop variable | Based on pre-computed count |
+| **Loop variable after loop** | Undefined | Has last value |
+| **Changing parameters inside** | Not allowed | Allowed (doesn't affect count) |
+| **Multiple entry/exit** | Allowed | Still allowed |
+
+## Why the Pre-Computed Count Matters
+
+### Example Showing the Difference
+
+**Same code, different behavior in FORTRAN IV vs FORTRAN 77:**
+
+```fortran
+PROGRAM LOOPEXAMPLE
+    I = 1
+    J = 10
+    K = 2
+    
+    DO 100 M = I, J, K
+        WRITE(*,*) 'M =', M
+        I = 20    ! Change initial parameter
+        J = 5     ! Change terminal parameter
+        K = -1    ! Change step parameter
+100 CONTINUE
+    
+    WRITE(*,*) 'Final M =', M
+END PROGRAM
+```
+
+**In FORTRAN IV (would be illegal or unpredictable):**
+- Might crash (changing loop variable not allowed)
+- Or might behave unpredictably
+
+**In FORTRAN 77/90:**
+1. At start: Count = INT((10-1+2)/2) = 5 iterations
+2. Runs 5 times with M values: 1, 3, 5, 7, 9
+3. Changes to I, J, K don't affect the loop
+4. Final M = 11 (9 + 2, but note: actually stops when count reaches 0)
+
+## Simple Summary
+
+1. **FORTRAN IV**: Strict rules, undefined after loop, no parameter changes
+2. **FORTRAN 77/90**: More flexible, keeps last value, uses pre-computed count
+3. **Key innovation**: Pre-computing iteration count makes loops more robust
+4. **Backward compatibility**: Same syntax but different semantics
+
+**Key Insight**: FORTRAN 77/90's approach of pre-computing the iteration count is like buying a 10-ride train ticket. Once you have the ticket (iteration count), you can take 10 rides regardless of whether the ticket prices change during your journey (changing loop parameters). The ticket was bought at the beginning and that's what counts!
+
+***
+***
+
+
+# Counter-Controlled Loops in Pascal, Ada, and C/C++ Explained
+
+## Pascal For Statement
+
+### Syntax
+```pascal
+for variable := initial_value (to | downto) final_value do
+    statement
+```
+
+### Key Rules and Features:
+
+**1. Loop variable must be of ordinal type:**
+- Integer, character, boolean, or enumerated type
+- NOT floating-point (no real numbers)
+
+**Examples:**
+```pascal
+for i := 1 to 10 do          { integer - OK }
+for ch := 'A' to 'Z' do      { character - OK }
+for b := false to true do    { boolean - OK }
+for x := 1.0 to 10.0 do      { real - ERROR! Not allowed }
+```
+
+**2. Loop variable undefined after normal termination:**
+```pascal
+for i := 1 to 5 do
+    writeln(i);             { prints 1,2,3,4,5 }
+
+writeln(i);  { ERROR: i is undefined here! }
+```
+
+**3. Loop variable cannot be changed inside loop:**
+```pascal
+for i := 1 to 10 do
+begin
+    i := i * 2;  { COMPILE ERROR: Cannot modify loop variable }
+    writeln(i);
+end;
+```
+
+**4. Initial and final values may be changed inside loop, but evaluated only once:**
+```pascal
+start := 1;
+finish := 5;
+for i := start to finish do
+begin
+    writeln(i);
+    start := 10;    { Changing start - allowed but doesn't affect loop }
+    finish := 20;   { Changing finish - allowed but doesn't affect loop }
+end;
+{ Still runs 5 times with i = 1,2,3,4,5 }
+```
+
+**5. Completion test is at the top of the loop:**
+The condition is checked BEFORE each iteration, so the loop may run 0 times.
+
+**Visualization of Pascal's For Loop:**
+```
+        ┌─────────────────────────────┐
+        │ for i := start to finish do │
+        └──────────────┬──────────────┘
+                       │
+             Evaluate start and finish
+                (once, at beginning)
+                       │
+                 Set i = start
+                       │
+                       ▼
+                ┌──────────────┐
+                │ i <= finish? │  (for "to")
+                └──────┬───────┘
+        Yes (continue) │    No (exit)
+            │          │
+            ▼          │
+        ┌───────┐      │
+        │ Body  │      │
+        └───────┘      │
+            │          │
+            ▼          │
+          i := i + 1───┘
+            │          (or i := i - 1 for "downto")
+            │
+            ▼
+        Back to check
+```
+
+## Ada For Statement
+
+### Syntax
+```ada
+for variable in [reverse] discrete_range loop
+    ...
+end loop;
+```
+
+### Example
+```ada
+for count in 1..10 loop
+    sum := sum + count;
+end loop;
+```
+
+### Key Features:
+
+**1. Loop variable is implicitly declared at the loop beginning:**
+```ada
+-- No need to declare 'count' outside
+for count in 1..10 loop
+    sum := sum + count;  -- 'count' exists only here
+end loop;
+-- 'count' does not exist here
+```
+
+**2. Loop variable implicitly undeclared at loop end:**
+The variable scope is ONLY inside the loop.
+
+**3. Discrete range:**
+Can be:
+- Integer range: `1..10`
+- Character range: `'a'..'z'`
+- Enumeration type
+- Can use `reverse` to count backwards
+
+**Examples:**
+```ada
+-- Forward loop
+for i in 1..5 loop
+    Put_Line(Integer'Image(i));  -- prints 1,2,3,4,5
+end loop;
+
+-- Reverse loop
+for i in reverse 1..5 loop
+    Put_Line(Integer'Image(i));  -- prints 5,4,3,2,1
+end loop;
+
+-- Character loop
+for ch in 'A'..'C' loop
+    Put_Line(Character'Image(ch));  -- prints 'A','B','C'
+end loop;
+```
+
+**4. Loop variable cannot be modified:**
+```ada
+for i in 1..10 loop
+    i := i * 2;  -- COMPILE ERROR: i is a constant within the loop
+end loop;
+```
+
+**Visualization of Ada's For Loop:**
+```
+        ┌─────────────────────────────┐
+        │ for i in [reverse] range    │
+        └──────────────┬──────────────┘
+                       │
+          Create new variable i
+          with scope only in loop
+                       │
+                       ▼
+                ┌──────────────┐
+                │ More values  │
+                │ in range?    │
+                └──────┬───────┘
+        Yes (continue) │    No (exit)
+            │          │
+            │          │
+            ▼          │
+        Assign next    │
+        value to i     │
+            │          │
+            ▼          │
+        ┌───────┐      │
+        │ Body  │      │
+        └───────┘      │
+            │          │
+            │          │
+            ▼          │
+        Back to check──┘
+            │
+            ▼
+    Destroy variable i
+    (out of scope)
+```
+
+## C & C++ For Statement
+
+### Syntax
+```c
+for(initialisation; pre_loop_expr; post_loop_expr)
+    statement;
+```
+
+### Example
+```c
+for(index = 0; index < 10; index++)
+    sum = sum + list[index];
+```
+
+### Key Features:
+
+**1. All expressions in the for are optional:**
+```c
+for(;;)  // Infinite loop - all parts omitted
+{
+    // This runs forever
+}
+
+for(;x < 10;)  // No initialization or increment
+{
+    // Similar to while(x < 10)
+}
+
+for(i = 0; i < 10;)  // No increment
+{
+    i++;  // Increment manually
+}
+```
+
+**2. Multiple statements may be used, separated by comma:**
+```c
+for(i = 0, j = 10; i < 10; i++, j--)
+{
+    printf("i=%d, j=%d\n", i, j);
+}
+```
+
+**3. C's for loop may contain both count and logical tests:**
+```c
+// Count-controlled with logical condition
+for(i = 0; i < 100 && array[i] != 0; i++)
+{
+    // Stops when i reaches 100 OR array[i] is 0
+}
+
+// Pure logical test
+for(; !feof(file); )
+{
+    // Read until end of file
+}
+```
+
+**4. Loop variable scope depends on where it's declared:**
+```c
+// C89 style - variable declared outside
+int i;
+for(i = 0; i < 10; i++)
+{
+    // i exists here
+}
+// i exists here too (value = 10)
+
+// C99/C++ style - variable declared in loop
+for(int i = 0; i < 10; i++)
+{
+    // i exists here
+}
+// i does NOT exist here (in C99/C++)
+```
+
+**5. Loop variable CAN be changed inside (but usually shouldn't be):**
+```c
+for(i = 0; i < 10; i++)
+{
+    i = i * 2;  // LEGAL but CONFUSING
+    // Changes the loop progression
+}
+```
+
+**Visualization of C's For Loop:**
+```
+        ┌─────────────────────────────┐
+        │ for(init; test; increment)  │
+        └──────────────┬──────────────┘
+                       │
+              Execute init statement
+                (once, at beginning)
+                       │
+                       ▼
+                ┌──────────────┐
+                │ Evaluate     │
+                │ test expr    │
+                └──────┬───────┘
+        true (continue)│    false (exit)
+            │          │        │
+            ▼          │        ▼
+        ┌───────┐      │   Loop ends
+        │ Body  │      │
+        └───────┘      │
+            │          │
+            ▼          │
+      Execute increment│
+      statement ───────┘
+            │
+            ▼
+        Back to test
+```
+
+## Comparison Summary
+
+| Feature | Pascal | Ada | C/C++ |
+|---------|--------|-----|-------|
+| **Variable scope** | Outside loop, undefined after | Only inside loop | Depends on declaration |
+| **Can modify variable inside?** | No | No | Yes (but not recommended) |
+| **Types allowed** | Ordinal only | Discrete types | Any type |
+| **Evaluation of bounds** | Once at start | Once at start | Test each iteration |
+| **Reverse iteration** | `downto` keyword | `reverse` keyword | Manual (e.g., `i--`) |
+| **Multiple variables** | No | No | Yes (comma operator) |
+| **Flexibility** | Least | Moderate | Most |
+
+## Simple Summary
+
+1. **Pascal**: Strict, ordinal types only, variable undefined after loop
+2. **Ada**: Clean, implicit declaration, scope limited to loop
+3. **C/C++**: Very flexible, all parts optional, can be abused
+
+**Key Insight**: Different languages make different trade-offs between safety and flexibility. Pascal and Ada prioritize safety (preventing common errors), while C/C++ prioritize flexibility (giving programmers maximum control, even if they shoot themselves in the foot)!
+
+***
+***
+
+
+# Logically Controlled Loops and Advanced Iteration Concepts Explained
+
+## Logically Controlled Loops
+
+### What Are Logically Controlled Loops?
+**Logically controlled loops** use a **Boolean expression** (true/false condition) to control repetition. Unlike counter-controlled loops that count, these loops continue as long as a condition remains true or until a condition becomes true.
+
+### Key Insight
+> "Every counter-controlled loop can be built with a logically controlled loop, but not the converse."
+
+**Why?**
+- You can always use a logical condition to simulate counting
+- But you can't use counting to simulate all logical conditions
+
+**Example**: Counter loop simulated with logical loop
+```c
+// Counter-controlled loop
+for (i = 0; i < 10; i++) {
+    printf("%d\n", i);
+}
+
+// Same thing with logical loop
+i = 0;
+while (i < 10) {
+    printf("%d\n", i);
+    i++;
+}
+```
+
+### The Two Basic Forms
+
+#### 1. Pre-test Loop (while) - Test First
+```c
+while (expression) {
+    loop body
+}
+```
+
+**Visualization**:
+```
+        ┌─────────────┐
+        │ Evaluate    │
+        │ expression  │
+        └──────┬──────┘
+        false  │  true
+         │     │
+         │     ▼
+         │  ┌──────┐
+         │  │ Body │
+         │  └──────┘
+         │     │
+         └─────┘
+               ▼
+         Continue after
+         loop
+```
+
+#### 2. Post-test Loop (do-while) - Test Last
+```c
+do {
+    loop body
+} while (expression);
+```
+
+**Visualization**:
+```
+        ┌──────┐
+        │ Body │  ← Execute FIRST
+        └──────┘
+           │
+           ▼
+        ┌─────────────┐
+        │ Evaluate    │
+        │ expression  │
+        └──────┬──────┘
+        false  │  true
+         │     │
+         ▼     └───┐
+    Continue      Repeat
+    after loop    loop
+```
+
+### C's For Loop: The Swiss Army Knife
+C's `for` loop can model both counting and logical loops:
+
+**Counting loop**:
+```c
+for (i = 0; i < 10; i++) {
+    // Counting loop
+}
+```
+
+**Logical loop**:
+```c
+for (; x != 0 && y > 5; ) {  // No initialization or increment
+    // Pure logical test
+    // Must update variables in body
+}
+```
+
+## User-Located Loop Controls
+
+### What Are User-Located Loop Controls?
+Some languages provide **infinite loops** that have **no built-in control mechanism**. You must add your own exit conditions. These are useful when you don't know in advance how many times to loop.
+
+### Ada's Loop Construct
+```ada
+loop
+    -- code here
+    exit when condition;  -- User provides exit condition
+    -- more code
+end loop;
+```
+
+### The General Form of Exit in Ada
+```ada
+exit [loop_label] [when condition];
+```
+
+**Three ways to use `exit`**:
+
+1. **Exit current loop**:
+```ada
+loop
+    -- do something
+    exit when count > 10;  -- Exit this loop when count > 10
+    -- do something else
+end loop;
+```
+
+2. **Exit labeled loop**:
+```ada
+Outer_Loop:
+loop
+    Inner_Loop:
+    loop
+        -- do something
+        exit Outer_Loop when disaster;  -- Exit BOTH loops
+        -- do something else
+    end loop Inner_Loop;
+end loop Outer_Loop;
+```
+
+3. **Unconditional exit**:
+```ada
+loop
+    -- do something
+    exit;  -- Exit immediately (same as "break" in C)
+    -- code here won't execute
+end loop;
+```
+
+### Example: Nested Loop Exit
+```ada
+Outer:
+for row in 1..max_rows loop
+    Inner:
+    for col in 1..max_cols loop
+        sum := sum + matrix(row, col);
+        exit Outer when sum > 1000;  -- Exit BOTH loops
+    end loop Inner;
+end loop Outer;
+```
+
+**Visualization**:
+```
+┌─────────────────────────────────────┐
+│ Outer: for row in 1..max_rows loop  │
+│   ┌─────────────────────────────┐   │
+│   │ Inner: for col in loop      │   │
+│   │   ┌──────────────────┐      │   │
+│   │   │ Add to sum       │      │   │
+│   │   │                  │      │   │
+│   │   │ if sum > 1000    │      │   │
+│   │   │   exit Outer ────┼──────┼───┼──┐
+│   │   └──────────────────┘      │   │  │
+│   └─────────────────────────────┘   │  │
+└─────────────────────────────────────┘  │
+         │                               │
+         ▼                               │
+    Continue here if                     │
+    normal exit                          │
+                                         │
+    ┌────────────────────────────────────┘
+    ▼
+Continue here after
+exit Outer (jumped out)
+```
+
+### MySQL Stored Procedure Example
+```sql
+loop_name: LOOP
+    -- statements
+    
+    IF some_condition THEN
+        LEAVE loop_name;  -- Like "break" in C
+    END IF;
+    
+    -- more statements
+END LOOP loop_name;
+```
+
+## Skip and Exit Controls in C/C++
+
+### 1. Continue Statement - Skip Part of Loop
+```c
+while (sum < 1000) {
+    getnext(value);
+    if (value < 0) continue;  // Skip negative values
+    sum += value;             // This line skipped when value < 0
+}
+```
+
+**What happens**:
+- When `value < 0`, `continue` jumps to the next iteration
+- The `sum += value` line is skipped
+- Loop condition checked again
+
+**Visualization**:
+```
+        ┌─────────────┐
+        │ sum < 1000? │
+        └──────┬──────┘
+        false  │  true
+         │     │
+         │     ▼
+         │  getnext(value)
+         │     │
+         │     ▼
+         │  value < 0? ────yes───┐
+         │     │no               │
+         │     ▼                 │
+         │  sum += value ◄───────┘ (skip)
+         │     │                 (continue jumps here)
+         │     │                      │
+         └─────┘                      │
+               │                      │
+               └──────────────────────┘
+```
+
+### 2. Break Statement - Exit Loop Entirely
+```c
+while (sum < 1000) {
+    getnext(value);
+    if (value < 0) break;  // Exit loop on negative value
+    sum += value;
+}
+```
+
+**What happens**:
+- When `value < 0`, `break` exits the entire loop immediately
+- No more iterations occur
+
+## Iteration Based on Data Structures
+
+### What Is Data Structure-Based Iteration?
+Instead of counting or using Boolean conditions, the loop iterates over **elements in a data structure**. The number of iterations equals the number of elements.
+
+### Perl Example
+```perl
+@names = ("Bob", "Carol", "Ted", "Ben");
+
+foreach $name (@names) {
+    print $name;
+}
+```
+
+**What happens**:
+- Loop runs 4 times (once for each name)
+- `$name` takes each value: "Bob", "Carol", "Ted", "Ben"
+- Prints all four names
+
+### The General Concept: Iterators
+
+An **iterator** is a user-defined function that:
+1. Returns the next element from a data structure
+2. Remembers which element was last returned (history sensitive)
+3. Signals when there are no more elements
+
+**How iterators work**:
+```
+        Start loop
+           │
+           ▼
+    ┌─────────────┐
+    │ Call        │
+    │ iterator    │
+    └──────┬──────┘
+           │
+    Has next    No more
+    element?    elements
+       │          │
+       ▼          ▼
+   Return     End loop
+   element
+       │
+       ▼
+   Execute
+   loop body
+       │
+       ▼
+   Next iteration
+```
+
+### Python's Iterator Example
+```python
+# Simple for loop with sequence
+for iterating_var in sequence:
+    statement(s)
+
+# Example with list
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)
+```
+
+**Under the hood**, Python:
+1. Gets an iterator from the sequence
+2. Calls `next()` on the iterator each time
+3. Stops when `StopIteration` exception is raised
+
+### User-Defined Iterators
+In languages like Python, you can create custom iterators:
+
+```python
+class CountDown:
+    def __init__(self, start):
+        self.current = start
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.current <= 0:
+            raise StopIteration
+        else:
+            self.current -= 1
+            return self.current + 1
+
+# Use the iterator
+for number in CountDown(5):
+    print(number)  # Prints 5, 4, 3, 2, 1
+```
+
+## Simple Summary
+
+1. **Logically controlled loops**: Use Boolean conditions, more general than counting loops
+2. **User-located controls**: Infinite loops with manual exit (like Ada's `exit`)
+3. **Continue vs Break**: `continue` skips to next iteration, `break` exits loop entirely
+4. **Data structure iteration**: Loop over elements in collections (arrays, lists, etc.)
+5. **Iterators**: Functions that return successive elements, remember position
+
+**Key Insight**: Modern programming languages give you multiple ways to loop because different situations need different approaches. Simple counting? Use a for-loop. Don't know how many times? Use while. Working with collections? Use foreach. Need fine control? Use manual exits!
